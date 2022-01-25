@@ -1,0 +1,157 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.0"
+      author: gretchen
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar (50)
+              - column:
+                  name: first_name
+                  type: varchar (50)
+              - column:
+                  name: surname
+                  type: varchar (50)
+              - column:
+                  name: date_of_birth
+                  type: date
+              - column:
+                  name: gender
+                  type: varchar (50)
+              - column:
+                  name: locality
+                  type: varchar (50)
+              - column:
+                  name: phone_number
+                  type: varchar (50)
+              - column:
+                  name: email
+                  type: varchar (50)
+              - column:
+                  name: registration_date
+                  type: date
+              - column:
+                  name: status
+                  type: varchar (50)
+              - column:
+                  name: role
+                  type: varchar (50)
+
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar (50)
+              - column:
+                  name: topic
+                  type: varchar (100)
+              - column:
+                  name: description
+                  type: varchar (1000)
+              - column:
+                  name: locality
+                  type: varchar (50)
+              - column:
+                  name: date
+                  type: timestamptz
+
+        - createTable:
+            tableName: workshops
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: speaker_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: FK_USER_WORKSHOP
+                    references: users(user_id)
+              - column:
+                  name: event_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: FK_EVENT_WORKSHOP
+                    references: events(id)
+              - column:
+                  name: date_time
+                  type: timestamptz
+              - column:
+                  name: topic
+                  type: varchar (50)
+              - column:
+                  name: description
+                  type: varchar (500)
+
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date_creating
+                  type: date
+              - column:
+                  name: deadline
+                  type: date
+              - column:
+                  name: executor_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: FK_USER_TASK
+                    references: users(user_id)
+              - column:
+                  name: description
+                  type: varchar (1000)
+              - column:
+                  name: status
+                  type: varchar
+
+        - createTable:
+            tableName: users_events
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: FK_USER_USERSEVENTS
+                    references: users (user_id)
+              - column:
+                  name: event_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: FK_EVENT_USERSEVENTS
+                    references: events (id)
