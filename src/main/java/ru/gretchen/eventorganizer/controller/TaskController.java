@@ -11,6 +11,7 @@ import ru.gretchen.eventorganizer.model.exception.TaskNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.TaskMapper;
 import ru.gretchen.eventorganizer.service.TaskService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDto create(@RequestBody TaskCreateDto createDto) {
+    public TaskDto create(@RequestBody @Valid TaskCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(taskMapper::fromCreateDto)
                 .map(taskService::create)
@@ -93,7 +94,7 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}")
-    public TaskDto update(@PathVariable(name = "id") Long id, @RequestBody TaskUpdateDto updateDto) {
+    public TaskDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid TaskUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(taskMapper::fromUpdateDto)
                 .map(toUpdate -> taskService.update(id, toUpdate))

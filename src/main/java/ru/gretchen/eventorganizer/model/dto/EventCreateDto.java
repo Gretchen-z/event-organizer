@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Value
@@ -13,10 +16,20 @@ import java.time.ZonedDateTime;
 @Jacksonized
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventCreateDto {
-    // todo: validator
+
+    @NotBlank(message = "Поле \"Название мероприятия\" не может быть пустым")
+    @Size(max = 50, message = "Поле \"Название мероприятия\" не может содержать более 50 символов")
     String name;
+
+    @Size(max = 100, message = "Поле \"Тематика мероприятия\" не может содержать более 100 символов")
     String topic;
+
+    @Size(max = 1000, message = "Поле \"Описание мероприятия\" не может содержать более 1000 символов")
     String description;
+
+    @Size(max = 50, message = "Поле \"Населённый пункт\" не может содержать более 50 символов")
     String locality;
+
+    @FutureOrPresent
     ZonedDateTime dateTime;
 }

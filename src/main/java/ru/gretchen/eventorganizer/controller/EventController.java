@@ -10,6 +10,7 @@ import ru.gretchen.eventorganizer.model.exception.EventNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
 import ru.gretchen.eventorganizer.service.EventService;
 
+import javax.validation.Valid;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class EventController {
     }
 
     @PostMapping
-    public EventDto create(@RequestBody EventCreateDto createDto) {
+    public EventDto create(@RequestBody @Valid EventCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(eventMapper::fromCreateDto)
                 .map(eventService::create)
@@ -73,7 +74,7 @@ public class EventController {
     }
 
     @PatchMapping("/{id}")
-    public EventDto update(@PathVariable(name = "id") Long id, @RequestBody EventUpdateDto updateDto) {
+    public EventDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid EventUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(eventMapper::fromUpdateDto)
                 .map(toUpdate -> eventService.update(id, toUpdate))

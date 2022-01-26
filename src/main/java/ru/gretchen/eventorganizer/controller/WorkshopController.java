@@ -10,6 +10,7 @@ import ru.gretchen.eventorganizer.model.exception.WorkshopNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
 import ru.gretchen.eventorganizer.service.WorkshopService;
 
+import javax.validation.Valid;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class WorkshopController {
     }
 
     @PostMapping
-    public WorkshopDto create(@RequestBody WorkshopCreateDto createDto) {
+    public WorkshopDto create(@RequestBody @Valid WorkshopCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(workshopMapper::fromCreateDto)
                 .map(workshopService::create)
@@ -82,7 +83,7 @@ public class WorkshopController {
     }
 
     @PatchMapping("/{id}")
-    public WorkshopDto update(@PathVariable(name = "id") Long id, @RequestBody WorkshopUpdateDto updateDto) {
+    public WorkshopDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid WorkshopUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(workshopMapper::fromUpdateDto)
                 .map(toUpdate -> workshopService.update(id, toUpdate))

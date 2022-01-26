@@ -10,6 +10,7 @@ import ru.gretchen.eventorganizer.model.exception.UserNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.UserMapper;
 import ru.gretchen.eventorganizer.service.UserService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto create(@RequestBody UserCreateDto createDto) {
+    public UserDto create(@RequestBody @Valid UserCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(userMapper::fromCreateDto)
                 .map(userService::create)
@@ -71,7 +72,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable(name = "userId") UUID userId, @RequestBody UserUpdateDto updateDto) {
+    public UserDto update(@PathVariable(name = "userId") UUID userId, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
                 .map(toUpdate -> userService.update(userId, toUpdate))
