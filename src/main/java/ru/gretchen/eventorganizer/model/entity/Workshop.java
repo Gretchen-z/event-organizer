@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Table(name = "workshops")
 public class Workshop {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne

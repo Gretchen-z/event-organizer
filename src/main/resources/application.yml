@@ -16,5 +16,10 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db-changelog-master.yaml
+server:
+  error:
+    include-message: always
+    include-exception: true
+    include-binding-errors: always
 
 
