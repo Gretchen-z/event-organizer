@@ -1,25 +1,25 @@
 package ru.gretchen.eventorganizer.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.gretchen.eventorganizer.model.entity.Task;
-import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public interface TaskService {
     Task get(Long id);
 
-    List<Task> getAll();
+    Page<Task> getAll(Pageable pageable);
 
-    List<Task> getAllByExecutor(UUID executorId);
+    Page<Task> getAllByExecutor(UUID executorId, Pageable pageable);
 
-    List<Task> getAllByDeadline(LocalDateTime deadline);
+    Page<Task> getAllByDeadline(LocalDateTime deadline, Pageable pageable);
 
-    List<Task> getAllByStatus(TaskStatus status);
+    Page<Task> getAllByStatus(TaskStatus status, Pageable pageable);
 
-    List<Task> getAllByDescription(String description);
+    Page<Task> getAllByDescription(String description, Pageable pageable);
 
     Task create(Task taskJson);
 

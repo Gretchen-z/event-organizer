@@ -1,21 +1,22 @@
 package ru.gretchen.eventorganizer.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public interface WorkshopService {
     Workshop get(Long id);
 
-    List<Workshop> getAll();
+    Page<Workshop> getAll(Pageable pageable);
 
-    List<Workshop> getAllByEvent(Long eventId);
+    Page<Workshop> getAllByEvent(Long eventId, Pageable pageable);
 
-    List<Workshop> getAllBySpeaker(UUID speakerId);
+    Page<Workshop> getAllBySpeaker(UUID speakerId, Pageable pageable);
 
-    List<Workshop> filterByDateTime(ZonedDateTime dateTime);
+    Page<Workshop> filterByDateTime(ZonedDateTime dateTime, Pageable pageable);
 
     Workshop create(Workshop workshopJson);
 

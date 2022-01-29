@@ -1,7 +1,11 @@
 package ru.gretchen.eventorganizer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import ru.gretchen.eventorganizer.model.dto.PaginationDto;
 import ru.gretchen.eventorganizer.model.dto.UserCreateDto;
 import ru.gretchen.eventorganizer.model.dto.UserDto;
 import ru.gretchen.eventorganizer.model.dto.UserUpdateDto;
@@ -11,8 +15,6 @@ import ru.gretchen.eventorganizer.model.mapper.UserMapper;
 import ru.gretchen.eventorganizer.service.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,33 +35,24 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getAll() {
-        List<User> users = userService.getAll();
-        List<UserDto> userDto = new ArrayList<>();
-        for (User user:users) {
-            userDto.add(userMapper.toDto(user));
-        }
-        return userDto;
+    public Page<UserDto> getAll(@RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<User> users = userService.getAll(pageable);
+        return users.map(userMapper::toDto);
     }
 
     @GetMapping("/{eventId}")
-    public List<UserDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId) {
-        List<User> users = userService.getAllByEventId(eventId);
-        List<UserDto> userDto = new ArrayList<>();
-        for (User user:users) {
-            userDto.add(userMapper.toDto(user));
-        }
-        return userDto;
+    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<User> users = userService.getAllByEventId(eventId, pageable);
+        return users.map(userMapper::toDto);
     }
 
     @GetMapping("/{surname}")
-    public List<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname) {
-        List<User> users = userService.getAllBySurname(surname);
-        List<UserDto> userDto = new ArrayList<>();
-        for (User user:users) {
-            userDto.add(userMapper.toDto(user));
-        }
-        return userDto;
+    public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<User> users = userService.getAllBySurname(surname, pageable);
+        return users.map(userMapper::toDto);
     }
 
     @PostMapping

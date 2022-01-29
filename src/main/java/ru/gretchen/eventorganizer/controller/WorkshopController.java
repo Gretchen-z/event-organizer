@@ -1,7 +1,11 @@
 package ru.gretchen.eventorganizer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import ru.gretchen.eventorganizer.model.dto.PaginationDto;
 import ru.gretchen.eventorganizer.model.dto.WorkshopCreateDto;
 import ru.gretchen.eventorganizer.model.dto.WorkshopDto;
 import ru.gretchen.eventorganizer.model.dto.WorkshopUpdateDto;
@@ -12,8 +16,6 @@ import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,43 +36,31 @@ public class WorkshopController {
     }
 
     @GetMapping
-    public List<WorkshopDto> getAll() {
-        List<Workshop> workshops = workshopService.getAll();
-        List<WorkshopDto> workshopDto = new ArrayList<>();
-        for (Workshop workshop:workshops) {
-            workshopDto.add(workshopMapper.toDto(workshop));
-        }
-        return workshopDto;
+    public Page<WorkshopDto> getAll(@RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Workshop> workshops = workshopService.getAll(pageable);
+        return workshops.map(workshopMapper::toDto);
     }
 
     @GetMapping("/{eventId}")
-    public List<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId) {
-        List<Workshop> workshops = workshopService.getAllByEvent(eventId);
-        List<WorkshopDto> workshopDto = new ArrayList<>();
-        for (Workshop workshop:workshops) {
-            workshopDto.add(workshopMapper.toDto(workshop));
-        }
-        return workshopDto;
+    public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Workshop> workshops = workshopService.getAllByEvent(eventId, pageable);
+        return workshops.map(workshopMapper::toDto);
     }
 
     @GetMapping("/{speakerId}")
-    public List<WorkshopDto> getAllBySpeaker(@PathVariable(name = "speakerId") UUID speakerId) {
-        List<Workshop> workshops = workshopService.getAllBySpeaker(speakerId);
-        List<WorkshopDto> workshopDto = new ArrayList<>();
-        for (Workshop workshop:workshops) {
-            workshopDto.add(workshopMapper.toDto(workshop));
-        }
-        return workshopDto;
+    public Page<WorkshopDto> getAllBySpeaker(@PathVariable(name = "speakerId") UUID speakerId, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Workshop> workshops = workshopService.getAllBySpeaker(speakerId, pageable);
+        return workshops.map(workshopMapper::toDto);
     }
 
     @GetMapping("/{dateTime}")
-    public List<WorkshopDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime) {
-        List<Workshop> workshops = workshopService.filterByDateTime(ZonedDateTime.now());
-        List<WorkshopDto> workshopDto = new ArrayList<>();
-        for (Workshop workshop:workshops) {
-            workshopDto.add(workshopMapper.toDto(workshop));
-        }
-        return workshopDto;
+    public Page<WorkshopDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Workshop> workshops = workshopService.filterByDateTime(ZonedDateTime.now(), pageable);
+        return workshops.map(workshopMapper::toDto);
     }
 
     @PostMapping

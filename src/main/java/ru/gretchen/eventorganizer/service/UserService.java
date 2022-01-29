@@ -1,18 +1,19 @@
 package ru.gretchen.eventorganizer.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.gretchen.eventorganizer.model.entity.User;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
     User get(UUID userId);
 
-    List<User> getAll();
+    Page<User> getAll(Pageable pageable);
 
-    List<User> getAllByEventId(Long eventId);
+    Page<User> getAllByEventId(Long eventId, Pageable pageable);
 
-    List<User> getAllBySurname(String surname);
+    Page<User> getAllBySurname(String surname, Pageable pageable);
 
     User create(User userJson);
 

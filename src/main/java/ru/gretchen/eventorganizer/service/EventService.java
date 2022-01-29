@@ -1,19 +1,20 @@
 package ru.gretchen.eventorganizer.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.gretchen.eventorganizer.model.entity.Event;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public interface EventService {
     Event get(Long id);
 
-    List<Event> getAll();
+    Page<Event> getAll(Pageable pageable);
 
-    List<Event> getAllByUserId(UUID userID);
+    Page<Event> getAllByUserId(UUID userID, Pageable pageable);
 
-    List<Event> filterByDateTime(ZonedDateTime dateTime);
+    Page<Event> filterByDateTime(ZonedDateTime dateTime, Pageable pageable);
 
     Event create(Event eventJson);
 

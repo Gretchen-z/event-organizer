@@ -1,7 +1,11 @@
 package ru.gretchen.eventorganizer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import ru.gretchen.eventorganizer.model.dto.PaginationDto;
 import ru.gretchen.eventorganizer.model.dto.TaskCreateDto;
 import ru.gretchen.eventorganizer.model.dto.TaskDto;
 import ru.gretchen.eventorganizer.model.dto.TaskUpdateDto;
@@ -13,8 +17,6 @@ import ru.gretchen.eventorganizer.service.TaskService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,53 +37,38 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDto> getAll() {
-        List<Task> tasks = taskService.getAll();
-        List<TaskDto> taskDto = new ArrayList<>();
-        for (Task task:tasks) {
-            taskDto.add(taskMapper.toDto(task));
-        }
-        return taskDto;
+    public Page<TaskDto> getAll(@RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Task> tasks = taskService.getAll(pageable);
+        return tasks.map(taskMapper::toDto);
     }
 
     @GetMapping("/{executorId}")
-    public List<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId) {
-        List<Task> tasks = taskService.getAllByExecutor(executorId);
-        List<TaskDto> taskDto = new ArrayList<>();
-        for (Task task:tasks) {
-            taskDto.add(taskMapper.toDto(task));
-        }
-        return taskDto;
+    public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Task> tasks = taskService.getAllByExecutor(executorId, pageable);
+        return tasks.map(taskMapper::toDto);
     }
 
     @GetMapping("/{deadline}")
-    public List<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline) {
-        List<Task> tasks = taskService.getAllByDeadline(deadline);
-        List<TaskDto> taskDto = new ArrayList<>();
-        for (Task task:tasks) {
-            taskDto.add(taskMapper.toDto(task));
-        }
-        return taskDto;
+    public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Task> tasks = taskService.getAllByDeadline(deadline, pageable);
+        return tasks.map(taskMapper::toDto);
     }
 
     @GetMapping("/{status}")
-    public List<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status) {
-        List<Task> tasks = taskService.getAllByStatus(status);
-        List<TaskDto> taskDto = new ArrayList<>();
-        for (Task task:tasks) {
-            taskDto.add(taskMapper.toDto(task));
-        }
-        return taskDto;
+    public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Task> tasks = taskService.getAllByStatus(status, pageable);
+        return tasks.map(taskMapper::toDto);
     }
 
     @GetMapping("/{description}")
-    public List<TaskDto> getAllByDescription(@PathVariable(name = "description") String description) {
-        List<Task> tasks = taskService.getAllByDescription(description);
-        List<TaskDto> taskDto = new ArrayList<>();
-        for (Task task:tasks) {
-            taskDto.add(taskMapper.toDto(task));
-        }
-        return taskDto;
+    public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Task> tasks = taskService.getAllByDescription(description, pageable);
+        return tasks.map(taskMapper::toDto);
     }
 
     @PostMapping

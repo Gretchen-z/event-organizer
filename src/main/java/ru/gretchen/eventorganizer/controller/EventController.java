@@ -1,10 +1,14 @@
 package ru.gretchen.eventorganizer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.gretchen.eventorganizer.model.dto.EventCreateDto;
 import ru.gretchen.eventorganizer.model.dto.EventDto;
 import ru.gretchen.eventorganizer.model.dto.EventUpdateDto;
+import ru.gretchen.eventorganizer.model.dto.PaginationDto;
 import ru.gretchen.eventorganizer.model.entity.Event;
 import ru.gretchen.eventorganizer.model.exception.EventNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
@@ -12,8 +16,6 @@ import ru.gretchen.eventorganizer.service.EventService;
 
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,34 +36,25 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventDto> getAll() {
-        List<Event> events = eventService.getAll();
-        List<EventDto> eventDto = new ArrayList<>();
-        for (Event event:events) {
-            eventDto.add(eventMapper.toDto(event));
-        }
-        return eventDto;
+    public Page<EventDto> getAll(@RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Event> events = eventService.getAll(pageable);
+        return events.map(eventMapper::toDto);
     }
 
     @GetMapping("/{userId}")
-    public List<EventDto> getAllByUserId(@PathVariable(name = "userId") UUID userId) {
-        List<Event> events = eventService.getAllByUserId(userId);
-        List<EventDto> eventDto = new ArrayList<>();
-        for (Event event:events) {
-            eventDto.add(eventMapper.toDto(event));
-        }
-        return eventDto;
+    public Page<EventDto> getAllByUserId(@PathVariable(name = "userId") UUID userId, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+        Page<Event> events = eventService.getAllByUserId(userId, pageable);
+        return events.map(eventMapper::toDto);
     }
 
     @GetMapping("/{dateTime}")
-    public List<EventDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime) {
+    public Page<EventDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime, @RequestBody PaginationDto paginationDto) {
+        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
         dateTime = ZonedDateTime.now();
-        List<Event> events = eventService.filterByDateTime(dateTime);
-        List<EventDto> eventDto = new ArrayList<>();
-        for (Event event:events) {
-            eventDto.add(eventMapper.toDto(event));
-        }
-        return eventDto;
+        Page<Event> events = eventService.filterByDateTime(dateTime, pageable);
+        return events.map(eventMapper::toDto);
     }
 
     @PostMapping

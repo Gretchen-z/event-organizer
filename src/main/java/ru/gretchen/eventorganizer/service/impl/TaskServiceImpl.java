@@ -1,6 +1,8 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gretchen.eventorganizer.model.entity.Task;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
@@ -9,7 +11,6 @@ import ru.gretchen.eventorganizer.repository.TaskRepository;
 import ru.gretchen.eventorganizer.service.TaskService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,29 +26,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAll() {
-        return taskRepository.findAll();
+    public Page<Task> getAll(Pageable pageable) {
+        return taskRepository.findAll(pageable);
     }
 
     @Override
-    public List<Task> getAllByExecutor(UUID executorId) {
-        return taskRepository.findAllByExecutor_UserId(executorId);
+    public Page<Task> getAllByExecutor(UUID executorId, Pageable pageable) {
+        return taskRepository.findAllByExecutor_UserId(executorId, pageable);
     }
 
     @Override
-    public List<Task> getAllByDeadline(LocalDateTime deadline) {
-        return taskRepository.findAllByDeadlineGreaterThan(deadline);
+    public Page<Task> getAllByDeadline(LocalDateTime deadline, Pageable pageable) {
+        return taskRepository.findAllByDeadlineGreaterThan(deadline, pageable);
     }
 
     @Override
-    public List<Task> getAllByStatus(TaskStatus status) {
-        return taskRepository.findAllByStatus(status);
+    public Page<Task> getAllByStatus(TaskStatus status, Pageable pageable) {
+        return taskRepository.findAllByStatus(status, pageable);
     }
 
     //todo: поиск по части описания
     @Override
-    public List<Task> getAllByDescription(String description) {
-        return taskRepository.findAllByDescription(description);
+    public Page<Task> getAllByDescription(String description, Pageable pageable) {
+        return taskRepository.findAllByDescription(description, pageable);
     }
 
     @Override

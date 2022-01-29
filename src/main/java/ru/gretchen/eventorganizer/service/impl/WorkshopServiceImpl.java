@@ -1,6 +1,8 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
@@ -8,7 +10,6 @@ import ru.gretchen.eventorganizer.repository.WorkshopRepository;
 import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,23 +25,23 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public List<Workshop> getAll() {
-        return workshopRepository.findAll();
+    public Page<Workshop> getAll(Pageable pageable) {
+        return workshopRepository.findAll(pageable);
     }
 
     @Override
-    public List<Workshop> getAllByEvent(Long eventId) {
-        return workshopRepository.findAllByEvent_Id(eventId);
+    public Page<Workshop> getAllByEvent(Long eventId, Pageable pageable) {
+        return workshopRepository.findAllByEvent_Id(eventId, pageable);
     }
 
     @Override
-    public List<Workshop> getAllBySpeaker(UUID speakerId) {
-        return workshopRepository.findAllBySpeaker_UserId(speakerId);
+    public Page<Workshop> getAllBySpeaker(UUID speakerId, Pageable pageable) {
+        return workshopRepository.findAllBySpeaker_UserId(speakerId, pageable);
     }
 
     @Override
-    public List<Workshop> filterByDateTime(ZonedDateTime dateTime) {
-        return workshopRepository.findAllByDateTimeGreaterThan(dateTime);
+    public Page<Workshop> filterByDateTime(ZonedDateTime dateTime, Pageable pageable) {
+        return workshopRepository.findAllByDateTimeGreaterThan(dateTime, pageable);
     }
 
     @Override

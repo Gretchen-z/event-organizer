@@ -1,6 +1,8 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gretchen.eventorganizer.model.entity.Event;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
@@ -8,7 +10,6 @@ import ru.gretchen.eventorganizer.repository.EventRepository;
 import ru.gretchen.eventorganizer.service.EventService;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,18 +25,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAll() {
-        return eventRepository.findAll();
+    public Page<Event> getAll(Pageable pageable) {
+        return eventRepository.findAll(pageable);
     }
 
     @Override
-    public List<Event> getAllByUserId(UUID userID) {
-        return eventRepository.findAllByUsers_userId(userID);
+    public Page<Event> getAllByUserId(UUID userID, Pageable pageable) {
+        return eventRepository.findAllByUsers_userId(userID, pageable);
     }
 
     @Override
-    public List<Event> filterByDateTime(ZonedDateTime dateTime) {
-        return eventRepository.findAllByDateTimeGreaterThan(dateTime);
+    public Page<Event> filterByDateTime(ZonedDateTime dateTime, Pageable pageable) {
+        return eventRepository.findAllByDateTimeGreaterThan(dateTime, pageable);
     }
 
     @Override
