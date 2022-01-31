@@ -1,5 +1,8 @@
 package ru.gretchen.eventorganizer.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,14 +22,19 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-// todo: swagger
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/workshops")
+@Tag(name = "Workshop", description = "Workshop management")
+@ApiResponse(responseCode = "500", description = "Internal error")
+@ApiResponse(responseCode = "400", description = "Validation failed")
+@ApiResponse(responseCode = "404", description = "Workshop not found")
 public class WorkshopController {
     private final WorkshopMapper workshopMapper;
     private final WorkshopService workshopService;
 
+    @Operation(description = "Workshop event by id")
+    @ApiResponse(responseCode = "200", description = "Workshop found")
     @GetMapping("/{id}")
     public WorkshopDto get(@PathVariable(name = "id") Long id) {
         return Optional.of(id)
@@ -35,6 +43,8 @@ public class WorkshopController {
                 .orElseThrow(() -> new WorkshopNotFoundException(id));
     }
 
+    @Operation(description = "Find all workshops")
+    @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping
     public Page<WorkshopDto> getAll(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -42,6 +52,8 @@ public class WorkshopController {
         return workshops.map(workshopMapper::toDto);
     }
 
+    @Operation(description = "Find all workshops by eventId")
+    @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{eventId}")
     public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -49,6 +61,8 @@ public class WorkshopController {
         return workshops.map(workshopMapper::toDto);
     }
 
+    @Operation(description = "Find all workshops by speakerId")
+    @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{speakerId}")
     public Page<WorkshopDto> getAllBySpeaker(@PathVariable(name = "speakerId") UUID speakerId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -56,6 +70,8 @@ public class WorkshopController {
         return workshops.map(workshopMapper::toDto);
     }
 
+    @Operation(description = "Find all workshops by dateTime")
+    @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{dateTime}")
     public Page<WorkshopDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -63,6 +79,8 @@ public class WorkshopController {
         return workshops.map(workshopMapper::toDto);
     }
 
+    @Operation(description = "Create workshop")
+    @ApiResponse(responseCode = "200", description = "Workshop created")
     @PostMapping
     public WorkshopDto create(@RequestBody @Valid WorkshopCreateDto createDto) {
         return Optional.ofNullable(createDto)
@@ -72,6 +90,8 @@ public class WorkshopController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Update workshop by id")
+    @ApiResponse(responseCode = "200", description = "Workshop updated")
     @PatchMapping("/{id}")
     public WorkshopDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid WorkshopUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
@@ -81,6 +101,8 @@ public class WorkshopController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Remove workshop by id")
+    @ApiResponse(responseCode = "204", description = "Workshop removed")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") Long id) {
         workshopService.delete(id);

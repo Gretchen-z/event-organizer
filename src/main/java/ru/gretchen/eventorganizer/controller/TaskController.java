@@ -1,5 +1,8 @@
 package ru.gretchen.eventorganizer.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,14 +23,19 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-// todo: swagger
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/tasks")
+@Tag(name = "Task", description = "Task management")
+@ApiResponse(responseCode = "500", description = "Internal error")
+@ApiResponse(responseCode = "400", description = "Validation failed")
+@ApiResponse(responseCode = "404", description = "Task not found")
 public class TaskController {
     public final TaskMapper taskMapper;
     public final TaskService taskService;
 
+    @Operation(description = "Find task by id")
+    @ApiResponse(responseCode = "200", description = "Task found")
     @GetMapping("/{id}")
     public TaskDto get(@PathVariable(name = "id") Long id) {
         return Optional.of(id)
@@ -36,6 +44,8 @@ public class TaskController {
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
+    @Operation(description = "Find all tasks")
+    @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping
     public Page<TaskDto> getAll(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -43,6 +53,8 @@ public class TaskController {
         return tasks.map(taskMapper::toDto);
     }
 
+    @Operation(description = "Find all tasks by executorId")
+    @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{executorId}")
     public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -50,6 +62,8 @@ public class TaskController {
         return tasks.map(taskMapper::toDto);
     }
 
+    @Operation(description = "Find all tasks by deadline")
+    @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{deadline}")
     public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -57,6 +71,8 @@ public class TaskController {
         return tasks.map(taskMapper::toDto);
     }
 
+    @Operation(description = "Find all tasks by status")
+    @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{status}")
     public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -64,6 +80,8 @@ public class TaskController {
         return tasks.map(taskMapper::toDto);
     }
 
+    @Operation(description = "Find all tasks by description")
+    @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{description}")
     public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -71,6 +89,8 @@ public class TaskController {
         return tasks.map(taskMapper::toDto);
     }
 
+    @Operation(description = "Create task")
+    @ApiResponse(responseCode = "200", description = "Task created")
     @PostMapping
     public TaskDto create(@RequestBody @Valid TaskCreateDto createDto) {
         return Optional.ofNullable(createDto)
@@ -80,6 +100,8 @@ public class TaskController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Update task by id")
+    @ApiResponse(responseCode = "200", description = "Task updated")
     @PatchMapping("/{id}")
     public TaskDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid TaskUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
@@ -89,6 +111,8 @@ public class TaskController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Remove task by id")
+    @ApiResponse(responseCode = "204", description = "Task removed")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") Long id) {
         taskService.delete(id);

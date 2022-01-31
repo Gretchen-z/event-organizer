@@ -1,5 +1,6 @@
 package ru.gretchen.eventorganizer.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +15,26 @@ import java.util.UUID;
 @Builder
 @Jacksonized
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Schema(name = "Task", description = "Task")
 public class TaskDto {
+
+    @Schema(description = "Task id",
+            required = true)
     Long id;
+
+    @Schema(description = "Task date creating")
     LocalDateTime dateCreating;
+
+    @Schema(description = "Task deadline")
     LocalDateTime deadline;
+
+    @Schema(description = "Executor userId")
     UUID executorId;
+
+    @Schema(description = "Task description",
+            required = true)
     String description;
+
+    @Schema(description = "Task status")
     TaskStatus status;
 }

@@ -1,5 +1,8 @@
 package ru.gretchen.eventorganizer.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,14 +21,19 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
-// todo: swagger
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
+@Tag(name = "User", description = "User management")
+@ApiResponse(responseCode = "500", description = "Internal error")
+@ApiResponse(responseCode = "400", description = "Validation failed")
+@ApiResponse(responseCode = "404", description = "User not found")
 public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
 
+    @Operation(description = "Find user by id")
+    @ApiResponse(responseCode = "200", description = "User found")
     @GetMapping("/{userId}")
     public UserDto get(@PathVariable(name = "userId") UUID userId) {
         return Optional.of(userId)
@@ -34,6 +42,8 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    @Operation(description = "Find all users")
+    @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping
     public Page<UserDto> getAll(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -41,6 +51,8 @@ public class UserController {
         return users.map(userMapper::toDto);
     }
 
+    @Operation(description = "Find all users by eventId")
+    @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping("/{eventId}")
     public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -48,6 +60,8 @@ public class UserController {
         return users.map(userMapper::toDto);
     }
 
+    @Operation(description = "Find all users by surname")
+    @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping("/{surname}")
     public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
@@ -55,6 +69,8 @@ public class UserController {
         return users.map(userMapper::toDto);
     }
 
+    @Operation(description = "Create user")
+    @ApiResponse(responseCode = "200", description = "User created")
     @PostMapping
     public UserDto create(@RequestBody @Valid UserCreateDto createDto) {
         return Optional.ofNullable(createDto)
@@ -64,6 +80,8 @@ public class UserController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Update user by id")
+    @ApiResponse(responseCode = "200", description = "User updated")
     @PatchMapping("/{userId}")
     public UserDto update(@PathVariable(name = "userId") UUID userId, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
@@ -73,6 +91,8 @@ public class UserController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Remove user by id")
+    @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable(name = "userId") UUID userId) {
         userService.delete(userId);
