@@ -30,7 +30,7 @@ public class TaskUpdateDto {
     @Schema(description = "Task deadline")
     LocalDateTime deadline;
 
-    @Schema(description = "Executor userId")
+    @Schema(description = "Executor user id")
     UUID executorId;
 
     @NotBlank(message = "Поле \"Описание задачи\" не может быть пустым")
@@ -39,6 +39,7 @@ public class TaskUpdateDto {
             required = true)
     String description;
 
+    @Size(max = 30)
     @Schema(description = "Task status")
     TaskStatus status;
 }

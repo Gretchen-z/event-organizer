@@ -8,11 +8,11 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public interface WorkshopService {
-    Workshop get(Long id);
+    Workshop get(UUID id);
 
     Page<Workshop> getAll(Pageable pageable);
 
-    Page<Workshop> getAllByEvent(Long eventId, Pageable pageable);
+    Page<Workshop> getAllByEvent(UUID eventId, Pageable pageable);
 
     Page<Workshop> getAllBySpeaker(UUID speakerId, Pageable pageable);
 
@@ -20,7 +20,7 @@ public interface WorkshopService {
 
     Workshop create(Workshop workshopJson);
 
-    Workshop update(Long id, Workshop workshopJson);
+    Workshop update(UUID id, Workshop workshopJson);
 
-    void delete(Long id);
+    void delete(UUID id);
 }

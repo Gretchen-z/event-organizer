@@ -9,21 +9,18 @@ import ru.gretchen.eventorganizer.model.entity.User;
 @Mapper
 public interface UserMapper {
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "events", ignore = true)
     User fromDto(UserDto source);
 
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "registrationDate", ignore = true)
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "events", ignore = true)
     User fromCreateDto(UserCreateDto source);
 
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "registrationDate", ignore = true)
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "events", ignore = true)
     User fromUpdateDto(UserUpdateDto source);
 

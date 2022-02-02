@@ -21,22 +21,22 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public User get(UUID userId) {
-        return userRepository.getById(userId);
+    public User get(UUID id) {
+        return userRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Page<User> getAll(@PageableDefault(sort = { "userId" }, direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<User> getAll(@PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC) Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
     @Override
-    public Page<User> getAllByEventId(Long eventId, @PageableDefault(sort = { "userId" }, direction = Sort.Direction.ASC) Pageable pageable) {
-        return userRepository.findAllByEvents_Id(eventId, pageable);
+    public Page<User> getAllByEventId(UUID eventId, @PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC) Pageable pageable) {
+        return userRepository.findAllByEventsId(eventId, pageable);
     }
 
     @Override
-    public Page<User> getAllBySurname(String surname, @PageableDefault(sort = { "userId" }, direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<User> getAllBySurname(String surname, @PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC) Pageable pageable) {
         return userRepository.findAllBySurname(surname, pageable);
     }
 
@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(UUID userId, User userJson) {
-        return Optional.of(userId)
+    public User update(UUID id, User userJson) {
+        return Optional.of(id)
                 .map(this::get)
                 .map(current -> userMapper.merge(current, userJson))
                 .map(userRepository::save)
@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UUID userId) {
-        userRepository.deleteById(userId);
+    public void delete(UUID id) {
+        final User user = userRepository.findById(id).orElseThrow();
+        userRepository.delete(user);
     }
 }

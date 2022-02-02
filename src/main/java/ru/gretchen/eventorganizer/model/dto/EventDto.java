@@ -8,6 +8,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Value
 @Builder
@@ -17,8 +18,11 @@ import java.time.ZonedDateTime;
 public class EventDto {
 
     @Schema(description = "Event id",
-            required = true)
-    Long id;
+            required = true,
+            pattern = "*.",
+            maxLength = 36,
+            minLength = 36)
+    UUID id;
 
     @Schema(description = "Event name",
             required = true)

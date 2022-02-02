@@ -20,8 +20,8 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
 
     @Override
-    public Event get(Long id) {
-        return eventRepository.getById(id);
+    public Event get(UUID id) {
+        return eventRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<Event> getAllByUserId(UUID userID, Pageable pageable) {
-        return eventRepository.findAllByUsers_userId(userID, pageable);
+        return eventRepository.findAllByUsersId(userID, pageable);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event update(Long id, Event eventJson) {
+    public Event update(UUID id, Event eventJson) {
         return Optional.of(id)
                 .map(this::get)
                 .map(current -> eventMapper.merge(current, eventJson))
@@ -54,7 +54,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void delete(Long id) {
-        eventRepository.deleteById(id);
+    public void delete(UUID id) {
+        final Event event = eventRepository.findById(id).orElseThrow();
+        eventRepository.delete(event);
     }
 }

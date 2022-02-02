@@ -1,14 +1,12 @@
 package ru.gretchen.eventorganizer.model.entity;
 
 import lombok.*;
-import ru.gretchen.eventorganizer.model.enumeration.ApplicationStatus;
 import ru.gretchen.eventorganizer.model.enumeration.Gender;
 import ru.gretchen.eventorganizer.model.enumeration.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,11 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue
-    @Column(name = "user_id")
-    private UUID userId;
+public class User extends BaseEntity {
 
     @Column(name = "password")
     private String password;
@@ -34,6 +28,7 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
 
@@ -49,10 +44,7 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    // todo: сделать отдельную таблицу со статусом заявки, связывающую user и event
-    @Column(name = "status")
-    private ApplicationStatus status;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
 

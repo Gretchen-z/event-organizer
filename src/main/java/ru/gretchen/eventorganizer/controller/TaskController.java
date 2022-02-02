@@ -37,7 +37,7 @@ public class TaskController {
     @Operation(description = "Find task by id")
     @ApiResponse(responseCode = "200", description = "Task found")
     @GetMapping("/{id}")
-    public TaskDto get(@PathVariable(name = "id") Long id) {
+    public TaskDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(taskService::get)
                 .map(taskMapper::toDto)
@@ -103,7 +103,7 @@ public class TaskController {
     @Operation(description = "Update task by id")
     @ApiResponse(responseCode = "200", description = "Task updated")
     @PatchMapping("/{id}")
-    public TaskDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid TaskUpdateDto updateDto) {
+    public TaskDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid TaskUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(taskMapper::fromUpdateDto)
                 .map(toUpdate -> taskService.update(id, toUpdate))
@@ -114,7 +114,7 @@ public class TaskController {
     @Operation(description = "Remove task by id")
     @ApiResponse(responseCode = "204", description = "Task removed")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(name = "id") Long id) {
+    public void delete(@PathVariable(name = "id") UUID id) {
         taskService.delete(id);
     }
 }

@@ -36,7 +36,7 @@ public class WorkshopController {
     @Operation(description = "Workshop event by id")
     @ApiResponse(responseCode = "200", description = "Workshop found")
     @GetMapping("/{id}")
-    public WorkshopDto get(@PathVariable(name = "id") Long id) {
+    public WorkshopDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(workshopService::get)
                 .map(workshopMapper::toDto)
@@ -55,7 +55,7 @@ public class WorkshopController {
     @Operation(description = "Find all workshops by eventId")
     @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{eventId}")
-    public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
+    public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
         Page<Workshop> workshops = workshopService.getAllByEvent(eventId, pageable);
         return workshops.map(workshopMapper::toDto);
@@ -93,7 +93,7 @@ public class WorkshopController {
     @Operation(description = "Update workshop by id")
     @ApiResponse(responseCode = "200", description = "Workshop updated")
     @PatchMapping("/{id}")
-    public WorkshopDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid WorkshopUpdateDto updateDto) {
+    public WorkshopDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid WorkshopUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(workshopMapper::fromUpdateDto)
                 .map(toUpdate -> workshopService.update(id, toUpdate))
@@ -104,7 +104,7 @@ public class WorkshopController {
     @Operation(description = "Remove workshop by id")
     @ApiResponse(responseCode = "204", description = "Workshop removed")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(name = "id") Long id) {
+    public void delete(@PathVariable(name = "id") UUID id) {
         workshopService.delete(id);
     }
 }

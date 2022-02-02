@@ -7,11 +7,11 @@ import ru.gretchen.eventorganizer.model.entity.User;
 import java.util.UUID;
 
 public interface UserService {
-    User get(UUID userId);
+    User get(UUID id);
 
     Page<User> getAll(Pageable pageable);
 
-    Page<User> getAllByEventId(Long eventId, Pageable pageable);
+    Page<User> getAllByEventId(UUID eventId, Pageable pageable);
 
     Page<User> getAllBySurname(String surname, Pageable pageable);
 

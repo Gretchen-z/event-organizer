@@ -36,7 +36,7 @@ public class EventController {
     @Operation(description = "Find event by id")
     @ApiResponse(responseCode = "200", description = "Event found")
     @GetMapping("/{id}")
-    public EventDto get(@PathVariable(name = "id") Long id) {
+    public EventDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(eventService::get)
                 .map(eventMapper::toDto)
@@ -85,7 +85,7 @@ public class EventController {
     @Operation(description = "Update event by id")
     @ApiResponse(responseCode = "200", description = "Event updated")
     @PatchMapping("/{id}")
-    public EventDto update(@PathVariable(name = "id") Long id, @RequestBody @Valid EventUpdateDto updateDto) {
+    public EventDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid EventUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(eventMapper::fromUpdateDto)
                 .map(toUpdate -> eventService.update(id, toUpdate))
@@ -96,7 +96,7 @@ public class EventController {
     @Operation(description = "Remove event by id")
     @ApiResponse(responseCode = "204", description = "Event removed")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(name = "id") Long id) {
+    public void delete(@PathVariable(name = "id") UUID id) {
         eventService.delete(id);
     }
 }

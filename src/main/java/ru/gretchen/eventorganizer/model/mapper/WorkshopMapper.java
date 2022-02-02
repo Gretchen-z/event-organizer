@@ -22,7 +22,7 @@ public interface WorkshopMapper {
     @Mapping(target = "event", ignore = true)
     Workshop fromUpdateDto(WorkshopUpdateDto source);
 
-    @Mapping(target = "speakerId", source = "speaker.userId")
+    @Mapping(target = "speakerId", source = "speaker.id")
     @Mapping(target = "eventId", source = "event.id")
     WorkshopDto toDto(Workshop source);
 

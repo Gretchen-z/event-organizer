@@ -36,9 +36,9 @@ public class WorkshopCreateDto {
             required = true)
     String description;
 
-    @Schema(description = "Speaker userId")
+    @Schema(description = "Speaker user id")
     UUID speakerId;
 
     @Schema(description = "EventId")
-    Long eventId;
+    UUID eventId;
 }

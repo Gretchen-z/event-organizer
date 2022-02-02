@@ -11,10 +11,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "workshops")
-public class Workshop {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Workshop extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "speaker_id")

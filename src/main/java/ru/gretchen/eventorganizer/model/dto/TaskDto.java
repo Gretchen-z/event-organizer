@@ -19,8 +19,11 @@ import java.util.UUID;
 public class TaskDto {
 
     @Schema(description = "Task id",
-            required = true)
-    Long id;
+            required = true,
+            pattern = "*.",
+            maxLength = 36,
+            minLength = 36)
+    UUID id;
 
     @Schema(description = "Task date creating")
     LocalDateTime dateCreating;
@@ -28,7 +31,7 @@ public class TaskDto {
     @Schema(description = "Task deadline")
     LocalDateTime deadline;
 
-    @Schema(description = "Executor userId")
+    @Schema(description = "Executor user id")
     UUID executorId;
 
     @Schema(description = "Task description",

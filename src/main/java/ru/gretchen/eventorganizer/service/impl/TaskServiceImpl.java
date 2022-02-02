@@ -21,8 +21,8 @@ public class TaskServiceImpl implements TaskService {
     public final TaskMapper taskMapper;
 
     @Override
-    public Task get(Long id) {
-        return taskRepository.getById(id);
+    public Task get(UUID id) {
+        return taskRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<Task> getAllByExecutor(UUID executorId, Pageable pageable) {
-        return taskRepository.findAllByExecutor_UserId(executorId, pageable);
+        return taskRepository.findAllByExecutorId(executorId, pageable);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(Long id, Task taskJson) {
+    public Task update(UUID id, Task taskJson) {
         return Optional.of(id)
                 .map(this::get)
                 .map(current -> taskMapper.merge(current, taskJson))
@@ -66,7 +66,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void delete(Long id) {
-        taskRepository.deleteById(id);
+    public void delete(UUID id) {
+        final Task task = taskRepository.findById(id).orElseThrow();
+        taskRepository.delete(task);
     }
 }

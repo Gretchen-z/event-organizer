@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface TaskService {
-    Task get(Long id);
+    Task get(UUID id);
 
     Page<Task> getAll(Pageable pageable);
 
@@ -23,7 +23,7 @@ public interface TaskService {
 
     Task create(Task taskJson);
 
-    Task update(Long id, Task taskJson);
+    Task update(UUID id, Task taskJson);
 
-    void delete(Long id);
+    void delete(UUID id);
 }

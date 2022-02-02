@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Page<User> findAllByEvents_Id(Long eventId, Pageable pageable);
+    Page<User> findAllByEventsId(UUID eventId, Pageable pageable);
 
     Page<User> findAllBySurname(String surname, Pageable pageable);
 }

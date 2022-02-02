@@ -10,8 +10,8 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Long> {
-    Page<Event> findAllByUsers_userId(UUID userID, Pageable pageable);
+public interface EventRepository extends JpaRepository<Event, UUID> {
+    Page<Event> findAllByUsersId(UUID userID, Pageable pageable);
 
     Page<Event> findAllByDateTimeGreaterThan(ZonedDateTime dateTime, Pageable pageable);
 }

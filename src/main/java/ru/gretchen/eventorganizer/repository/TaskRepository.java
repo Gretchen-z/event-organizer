@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, Long> {
-    Page<Task> findAllByExecutor_UserId(UUID executorId, Pageable pageable);
+public interface TaskRepository extends JpaRepository<Task, UUID> {
+    Page<Task> findAllByExecutorId(UUID executorId, Pageable pageable);
 
     Page<Task> findAllByDeadlineGreaterThan(LocalDateTime deadline, Pageable pageable);
 

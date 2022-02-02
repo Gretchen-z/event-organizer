@@ -8,15 +8,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "events")
-public class Event {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Event extends BaseEntity {
 
     @Column(name = "name")
     private String name;

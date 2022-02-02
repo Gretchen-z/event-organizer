@@ -18,8 +18,11 @@ import java.util.UUID;
 public class WorkshopDto {
 
     @Schema(description = "Workshop id",
-            required = true)
-    Long id;
+            required = true,
+            pattern = "*.",
+            maxLength = 36,
+            minLength = 36)
+    UUID id;
 
     @Schema(description = "Workshop date time")
     ZonedDateTime dateTime;
@@ -32,9 +35,9 @@ public class WorkshopDto {
             required = true)
     String description;
 
-    @Schema(description = "Speaker userId")
+    @Schema(description = "Speaker user id")
     UUID speakerId;
 
     @Schema(description = "EventId")
-    Long eventId;
+    UUID eventId;
 }

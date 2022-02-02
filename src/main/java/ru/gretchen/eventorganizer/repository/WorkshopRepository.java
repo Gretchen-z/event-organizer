@@ -10,11 +10,11 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Repository
-public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
+public interface WorkshopRepository extends JpaRepository<Workshop, UUID> {
 
-    Page<Workshop> findAllBySpeaker_UserId(UUID speakerId, Pageable pageable);
+    Page<Workshop> findAllBySpeakerId(UUID speakerId, Pageable pageable);
 
-    Page<Workshop> findAllByEvent_Id(Long eventId, Pageable pageable);
+    Page<Workshop> findAllByEventId(UUID eventId, Pageable pageable);
 
     Page<Workshop> findAllByDateTimeGreaterThan(ZonedDateTime dateTime, Pageable pageable);
 }

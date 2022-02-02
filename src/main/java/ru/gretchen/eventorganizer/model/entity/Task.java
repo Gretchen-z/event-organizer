@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "tasks")
-public class Task {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Task extends BaseEntity {
 
     @Column(name = "date_creating")
     private LocalDateTime dateCreating;
@@ -30,6 +27,7 @@ public class Task {
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private TaskStatus status;
 }

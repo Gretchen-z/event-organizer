@@ -20,7 +20,7 @@ public interface TaskMapper {
     @Mapping(target = "executor", ignore = true)
     Task fromUpdateDto(TaskUpdateDto source);
 
-    @Mapping(target = "executorId", source = "executor.userId")
+    @Mapping(target = "executorId", source = "executor.id")
     TaskDto toDto(Task source);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

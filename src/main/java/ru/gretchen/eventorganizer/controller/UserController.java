@@ -34,12 +34,12 @@ public class UserController {
 
     @Operation(description = "Find user by id")
     @ApiResponse(responseCode = "200", description = "User found")
-    @GetMapping("/{userId}")
-    public UserDto get(@PathVariable(name = "userId") UUID userId) {
-        return Optional.of(userId)
+    @GetMapping("/{id}")
+    public UserDto get(@PathVariable(name = "id") UUID id) {
+        return Optional.of(id)
                 .map(userService::get)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Operation(description = "Find all users")
@@ -54,7 +54,7 @@ public class UserController {
     @Operation(description = "Find all users by eventId")
     @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping("/{eventId}")
-    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") Long eventId, @RequestBody PaginationDto paginationDto) {
+    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
         Page<User> users = userService.getAllByEventId(eventId, pageable);
         return users.map(userMapper::toDto);
@@ -82,19 +82,19 @@ public class UserController {
 
     @Operation(description = "Update user by id")
     @ApiResponse(responseCode = "200", description = "User updated")
-    @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable(name = "userId") UUID userId, @RequestBody @Valid UserUpdateDto updateDto) {
+    @PatchMapping("/{id}")
+    public UserDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
-                .map(toUpdate -> userService.update(userId, toUpdate))
+                .map(toUpdate -> userService.update(id, toUpdate))
                 .map(userMapper::toDto)
                 .orElseThrow();
     }
 
     @Operation(description = "Remove user by id")
     @ApiResponse(responseCode = "204", description = "User removed")
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable(name = "userId") UUID userId) {
-        userService.delete(userId);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(name = "id") UUID id) {
+        userService.delete(id);
     }
 }

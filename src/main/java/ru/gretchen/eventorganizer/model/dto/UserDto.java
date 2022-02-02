@@ -24,7 +24,7 @@ public class UserDto {
             pattern = "*.",
             maxLength = 36,
             minLength = 36)
-    UUID userId;
+    UUID id;
 
     @Schema(description = "User name",
             required = true)

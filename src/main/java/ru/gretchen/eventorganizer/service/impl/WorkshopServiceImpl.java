@@ -20,8 +20,8 @@ public class WorkshopServiceImpl implements WorkshopService {
     private final WorkshopMapper workshopMapper;
 
     @Override
-    public Workshop get(Long id) {
-        return workshopRepository.getById(id);
+    public Workshop get(UUID id) {
+        return workshopRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -30,13 +30,13 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public Page<Workshop> getAllByEvent(Long eventId, Pageable pageable) {
-        return workshopRepository.findAllByEvent_Id(eventId, pageable);
+    public Page<Workshop> getAllByEvent(UUID eventId, Pageable pageable) {
+        return workshopRepository.findAllByEventId(eventId, pageable);
     }
 
     @Override
     public Page<Workshop> getAllBySpeaker(UUID speakerId, Pageable pageable) {
-        return workshopRepository.findAllBySpeaker_UserId(speakerId, pageable);
+        return workshopRepository.findAllBySpeakerId(speakerId, pageable);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public Workshop update(Long id, Workshop workshopJson) {
+    public Workshop update(UUID id, Workshop workshopJson) {
         return Optional.of(id)
                 .map(this::get)
                 .map(current -> workshopMapper.merge(current, workshopJson))
@@ -59,7 +59,8 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public void delete(Long id) {
-        workshopRepository.deleteById(id);
+    public void delete(UUID id) {
+        final Workshop workshop = workshopRepository.findById(id).orElseThrow();
+        workshopRepository.delete(workshop);
     }
 }
