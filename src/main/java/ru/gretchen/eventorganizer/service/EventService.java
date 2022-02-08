@@ -14,7 +14,7 @@ public interface EventService {
 
     Page<Event> getAllByUserId(UUID userID, Pageable pageable);
 
-    Page<Event> filterByDateTime(ZonedDateTime dateTime, Pageable pageable);
+    Page<Event> getAllByDateTime(ZonedDateTime dateTime, Pageable pageable);
 
     Event create(Event eventJson);
 

@@ -35,8 +35,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> filterByDateTime(ZonedDateTime dateTime, Pageable pageable) {
-        return eventRepository.findAllByDateTimeGreaterThan(dateTime, pageable);
+    public Page<Event> getAllByDateTime(ZonedDateTime dateTime, Pageable pageable) {
+        return eventRepository.findAllByDateTimeGreaterThan(ZonedDateTime.now(), pageable);
     }
 
     @Override

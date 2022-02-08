@@ -72,10 +72,10 @@ public class WorkshopController {
 
     @Operation(description = "Find all workshops by dateTime")
     @ApiResponse(responseCode = "200", description = "Workshops found")
-    @GetMapping("/{dateTime}")
-    public Page<WorkshopDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime, @RequestBody PaginationDto paginationDto) {
+    @GetMapping("/dateTimeNow")
+    public Page<WorkshopDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
-        Page<Workshop> workshops = workshopService.filterByDateTime(ZonedDateTime.now(), pageable);
+        Page<Workshop> workshops = workshopService.getAllByDateTime(ZonedDateTime.now(), pageable);
         return workshops.map(workshopMapper::toDto);
     }
 

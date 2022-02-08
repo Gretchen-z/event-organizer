@@ -63,11 +63,10 @@ public class EventController {
 
     @Operation(description = "Find all events by dateTime")
     @ApiResponse(responseCode = "200", description = "Events found")
-    @GetMapping("/{dateTime}")
-    public Page<EventDto> filterByDateTime(@PathVariable(name = "dateTime") ZonedDateTime dateTime, @RequestBody PaginationDto paginationDto) {
+    @GetMapping("/dateTimeNow")
+    public Page<EventDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
-        dateTime = ZonedDateTime.now();
-        Page<Event> events = eventService.filterByDateTime(dateTime, pageable);
+        Page<Event> events = eventService.getAllByDateTime(ZonedDateTime.now(), pageable);
         return events.map(eventMapper::toDto);
     }
 

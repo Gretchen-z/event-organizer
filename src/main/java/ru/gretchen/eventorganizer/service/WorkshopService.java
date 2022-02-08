@@ -16,7 +16,7 @@ public interface WorkshopService {
 
     Page<Workshop> getAllBySpeaker(UUID speakerId, Pageable pageable);
 
-    Page<Workshop> filterByDateTime(ZonedDateTime dateTime, Pageable pageable);
+    Page<Workshop> getAllByDateTime(ZonedDateTime dateTime, Pageable pageable);
 
     Workshop create(Workshop workshopJson);
 

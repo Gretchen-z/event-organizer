@@ -40,8 +40,8 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public Page<Workshop> filterByDateTime(ZonedDateTime dateTime, Pageable pageable) {
-        return workshopRepository.findAllByDateTimeGreaterThan(dateTime, pageable);
+    public Page<Workshop> getAllByDateTime(ZonedDateTime dateTime, Pageable pageable) {
+        return workshopRepository.findAllByDateTimeGreaterThan(ZonedDateTime.now(), pageable);
     }
 
     @Override

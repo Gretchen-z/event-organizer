@@ -45,10 +45,9 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAllByStatus(status, pageable);
     }
 
-    //todo: поиск по части описания
     @Override
     public Page<Task> getAllByDescription(String description, Pageable pageable) {
-        return taskRepository.findAllByDescription(description, pageable);
+        return taskRepository.findAllByDescriptionContaining(description, pageable);
     }
 
     @Override
