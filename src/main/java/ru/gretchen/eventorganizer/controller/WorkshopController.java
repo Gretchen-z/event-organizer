@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import ru.gretchen.eventorganizer.model.dto.PaginationDto;
-import ru.gretchen.eventorganizer.model.dto.WorkshopCreateDto;
-import ru.gretchen.eventorganizer.model.dto.WorkshopDto;
-import ru.gretchen.eventorganizer.model.dto.WorkshopUpdateDto;
+import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.exception.WorkshopNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
@@ -106,5 +103,43 @@ public class WorkshopController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         workshopService.delete(id);
+    }
+
+    @GetMapping("/{id}/speakers/{speakerId}")
+    public UserDto getUser(@PathVariable UUID id, @PathVariable UUID speakerId) {
+        return null;
+    }
+
+    @PostMapping("/{id}/speakers")
+    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/speakers/{speakerId}")
+    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID speakerId, @RequestBody EventUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/speakers/{speakerId}")
+    public void deleteUser(@PathVariable UUID id, @PathVariable UUID speakerId) {
+    }
+
+    @GetMapping("/{id}/events/{eventId}")
+    public EventDto getEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
+        return null;
+    }
+
+    @PostMapping("/{id}/events")
+    public EventDto assignEvent(@PathVariable UUID id, @RequestBody EventCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/events/{eventId}")
+    public EventDto updateEvent(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody EventUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/events/{eventId}")
+    public void deleteEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
     }
 }

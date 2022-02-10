@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import ru.gretchen.eventorganizer.model.dto.EventCreateDto;
-import ru.gretchen.eventorganizer.model.dto.EventDto;
-import ru.gretchen.eventorganizer.model.dto.EventUpdateDto;
-import ru.gretchen.eventorganizer.model.dto.PaginationDto;
+import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Event;
 import ru.gretchen.eventorganizer.model.exception.EventNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
@@ -97,5 +94,43 @@ public class EventController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         eventService.delete(id);
+    }
+
+    @GetMapping("/{id}/workshops/{workshopId}")
+    public Page<WorkshopDto> getWorkshops(@PathVariable UUID id, @PathVariable UUID workshopId, @RequestBody PaginationDto paginationDto) {
+        return null;
+    }
+
+    @PostMapping("/{id}/workshops")
+    public WorkshopDto assignWorkshop(@PathVariable UUID id, @RequestBody WorkshopCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/workshops/{workshopId}")
+    public WorkshopDto updateWorkshop(@PathVariable UUID id, @PathVariable UUID workshopId, @RequestBody WorkshopUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/workshops/{workshopId}")
+    public void deleteWorkshop(@PathVariable UUID id, @PathVariable UUID workshopId) {
+    }
+
+    @GetMapping("/{id}/users/{userId}")
+    public Page<UserDto> getUsers(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody PaginationDto paginationDto) {
+        return null;
+    }
+
+    @PostMapping("/{id}/users")
+    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/users/{userId}")
+    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody UserUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/users/{userId}")
+    public void deleteUser(@PathVariable UUID id, @PathVariable UUID userId) {
     }
 }

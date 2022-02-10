@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import ru.gretchen.eventorganizer.model.dto.PaginationDto;
-import ru.gretchen.eventorganizer.model.dto.TaskCreateDto;
-import ru.gretchen.eventorganizer.model.dto.TaskDto;
-import ru.gretchen.eventorganizer.model.dto.TaskUpdateDto;
+import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Task;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 import ru.gretchen.eventorganizer.model.exception.TaskNotFoundException;
@@ -116,5 +113,24 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         taskService.delete(id);
+    }
+
+    @GetMapping("/{id}/executors/{executorId}")
+    public UserDto getUser(@PathVariable UUID id, @PathVariable UUID executorId) {
+        return null;
+    }
+
+    @PostMapping("/{id}/executors")
+    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/executors/{executorId}")
+    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID executorId, @RequestBody EventUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/executors/{executorId}")
+    public void deleteUser(@PathVariable UUID id, @PathVariable UUID executorId) {
     }
 }

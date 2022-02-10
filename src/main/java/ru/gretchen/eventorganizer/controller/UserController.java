@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import ru.gretchen.eventorganizer.model.dto.PaginationDto;
-import ru.gretchen.eventorganizer.model.dto.UserCreateDto;
-import ru.gretchen.eventorganizer.model.dto.UserDto;
-import ru.gretchen.eventorganizer.model.dto.UserUpdateDto;
+import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.User;
 import ru.gretchen.eventorganizer.model.exception.UserNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.UserMapper;
@@ -96,5 +93,24 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         userService.delete(id);
+    }
+
+    @GetMapping("/{id}/events/{eventId}")
+    public Page<EventDto> getEvents(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody PaginationDto paginationDto) {
+        return null;
+    }
+
+    @PostMapping("/{id}/events")
+    public EventDto assignEvent(@PathVariable UUID id, @RequestBody EventCreateDto createDto) {
+        return null;
+    }
+
+    @PatchMapping("/{id}/events/{eventId}")
+    public EventDto updateEvent(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody EventUpdateDto updateDto) {
+        return null;
+    }
+
+    @DeleteMapping("/{id}/events/{eventId}")
+    public void deleteEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
     }
 }

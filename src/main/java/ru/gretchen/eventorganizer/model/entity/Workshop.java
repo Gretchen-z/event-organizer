@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Table(name = "workshops")
 public class Workshop extends BaseEntity{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "speaker_id")
     private User speaker;
 
@@ -26,7 +26,7 @@ public class Workshop extends BaseEntity{
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
 }

@@ -20,7 +20,7 @@ public class Task extends BaseEntity {
     @Column(name = "deadline")
     private LocalDateTime deadline;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "executor_id")
     private User executor;
 

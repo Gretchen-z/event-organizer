@@ -29,10 +29,10 @@ public class Event extends BaseEntity {
     @Column(name = "date")
     private ZonedDateTime dateTime;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private List<Workshop> workshops;
 
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY)
     private List<User> users;
 }

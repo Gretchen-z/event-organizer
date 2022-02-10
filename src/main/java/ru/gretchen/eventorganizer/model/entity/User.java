@@ -48,7 +48,7 @@ public class User extends BaseEntity {
     @Column(name = "role")
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_events",
             joinColumns = { @JoinColumn(name = "user_id") },
