@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.User;
 import ru.gretchen.eventorganizer.model.mapper.UserMapper;
 import ru.gretchen.eventorganizer.repository.UserRepository;
@@ -41,11 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User create(User userJson) {
         return userRepository.save(userJson);
     }
 
     @Override
+    @Transactional
     public User update(UUID id, User userJson) {
         return Optional.of(id)
                 .map(this::get)
@@ -55,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         final User user = userRepository.findById(id).orElseThrow();
         userRepository.delete(user);

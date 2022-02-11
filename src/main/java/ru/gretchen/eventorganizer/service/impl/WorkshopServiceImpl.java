@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
 import ru.gretchen.eventorganizer.repository.WorkshopRepository;
@@ -45,11 +46,13 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
+    @Transactional
     public Workshop create(Workshop workshopJson) {
         return workshopRepository.save(workshopJson);
     }
 
     @Override
+    @Transactional
     public Workshop update(UUID id, Workshop workshopJson) {
         return Optional.of(id)
                 .map(this::get)
@@ -59,6 +62,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         final Workshop workshop = workshopRepository.findById(id).orElseThrow();
         workshopRepository.delete(workshop);

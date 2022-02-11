@@ -7,6 +7,7 @@ import ru.gretchen.eventorganizer.model.enumeration.Role;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,11 +49,12 @@ public class User extends BaseEntity {
     @Column(name = "role")
     private Role role;
 
+    @Setter(AccessLevel.PRIVATE)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_events",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "event_id") }
     )
-    private List<Event> events;
+    private Set<Event> events;
 }

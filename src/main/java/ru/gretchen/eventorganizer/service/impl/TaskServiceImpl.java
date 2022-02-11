@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.Task;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 import ru.gretchen.eventorganizer.model.mapper.TaskMapper;
@@ -51,11 +52,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public Task create(Task taskJson) {
         return taskRepository.save(taskJson);
     }
 
     @Override
+    @Transactional
     public Task update(UUID id, Task taskJson) {
         return Optional.of(id)
                 .map(this::get)
@@ -65,6 +68,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         final Task task = taskRepository.findById(id).orElseThrow();
         taskRepository.delete(task);

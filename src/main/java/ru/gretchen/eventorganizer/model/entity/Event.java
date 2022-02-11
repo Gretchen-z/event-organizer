@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,10 +30,12 @@ public class Event extends BaseEntity {
     @Column(name = "date")
     private ZonedDateTime dateTime;
 
+    @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private List<Workshop> workshops;
 
+    @Setter(AccessLevel.PRIVATE)
     @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY)
-    private List<User> users;
+    private Set<User> users;
 }

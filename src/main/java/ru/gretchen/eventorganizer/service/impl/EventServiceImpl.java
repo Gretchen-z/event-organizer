@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.Event;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
 import ru.gretchen.eventorganizer.repository.EventRepository;
@@ -40,11 +41,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public Event create(Event eventJson) {
         return eventRepository.save(eventJson);
     }
 
     @Override
+    @Transactional
     public Event update(UUID id, Event eventJson) {
         return Optional.of(id)
                 .map(this::get)
@@ -54,6 +57,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         final Event event = eventRepository.findById(id).orElseThrow();
         eventRepository.delete(event);
