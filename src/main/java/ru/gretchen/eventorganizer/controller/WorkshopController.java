@@ -35,7 +35,7 @@ public class WorkshopController {
     @GetMapping("/{id}")
     public WorkshopDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
-                .map(workshopService::get)
+                .map(workshopService::getAndInitialize)
                 .map(workshopMapper::toDto)
                 .orElseThrow(() -> new WorkshopNotFoundException(id));
     }
@@ -69,7 +69,7 @@ public class WorkshopController {
 
     @Operation(description = "Find all workshops by dateTime")
     @ApiResponse(responseCode = "200", description = "Workshops found")
-    @GetMapping("/dateTimeNow")
+    @GetMapping("/date-time-now")
     public Page<WorkshopDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
         Page<Workshop> workshops = workshopService.getAllByDateTime(ZonedDateTime.now(), pageable);

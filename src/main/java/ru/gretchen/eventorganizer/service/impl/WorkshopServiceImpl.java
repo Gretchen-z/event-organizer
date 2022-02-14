@@ -1,6 +1,7 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WorkshopServiceImpl implements WorkshopService {
     private final WorkshopRepository workshopRepository;
     private final WorkshopMapper workshopMapper;
 
     @Override
-    public Workshop get(UUID id) {
-        return workshopRepository.findById(id).orElseThrow();
+    public Workshop getAndInitialize(UUID id) {
+        Workshop result = workshopRepository.findById(id).orElseThrow();
+        Hibernate.initialize(result);
+        Hibernate.initialize(result.getSpeaker());
+        Hibernate.initialize(result.getEvent());
+        return result;
     }
 
     @Override
@@ -55,7 +61,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     @Transactional
     public Workshop update(UUID id, Workshop workshopJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(this::getAndInitialize)
                 .map(current -> workshopMapper.merge(current, workshopJson))
                 .map(workshopRepository::save)
                 .orElseThrow();

@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public interface WorkshopService {
-    Workshop get(UUID id);
+    Workshop getAndInitialize(UUID id);
 
     Page<Workshop> getAll(Pageable pageable);
 

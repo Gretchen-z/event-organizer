@@ -1,6 +1,7 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,13 +18,17 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @Override
-    public User get(UUID id) {
-        return userRepository.findById(id).orElseThrow();
+    public User getAndInitialize(UUID id) {
+        User result = userRepository.findById(id).orElseThrow();
+        Hibernate.initialize(result);
+        Hibernate.initialize(result.getEvents());
+        return result;
     }
 
     @Override
@@ -51,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User update(UUID id, User userJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(this::getAndInitialize)
                 .map(current -> userMapper.merge(current, userJson))
                 .map(userRepository::save)
                 .orElseThrow();

@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public interface EventService {
-    Event get(UUID id);
+    Event getAndInitialize(UUID id);
 
     Page<Event> getAll(Pageable pageable);
 

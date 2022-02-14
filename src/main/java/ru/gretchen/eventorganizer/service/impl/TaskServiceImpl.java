@@ -1,6 +1,7 @@
 package ru.gretchen.eventorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,17 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TaskServiceImpl implements TaskService {
     public final TaskRepository taskRepository;
     public final TaskMapper taskMapper;
 
     @Override
-    public Task get(UUID id) {
-        return taskRepository.findById(id).orElseThrow();
+    public Task getAndInitialize(UUID id) {
+        Task result = taskRepository.findById(id).orElseThrow();
+        Hibernate.initialize(result);
+        Hibernate.initialize(result.getExecutor());
+        return result;
     }
 
     @Override
@@ -61,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public Task update(UUID id, Task taskJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(this::getAndInitialize)
                 .map(current -> taskMapper.merge(current, taskJson))
                 .map(taskRepository::save)
                 .orElseThrow();

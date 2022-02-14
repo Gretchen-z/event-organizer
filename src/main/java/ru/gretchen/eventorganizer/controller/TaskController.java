@@ -36,7 +36,7 @@ public class TaskController {
     @GetMapping("/{id}")
     public TaskDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
-                .map(taskService::get)
+                .map(taskService::getAndInitialize)
                 .map(taskMapper::toDto)
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }

@@ -6,7 +6,6 @@ import ru.gretchen.eventorganizer.model.enumeration.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Getter

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface TaskService {
-    Task get(UUID id);
+    Task getAndInitialize(UUID id);
 
     Page<Task> getAll(Pageable pageable);
 

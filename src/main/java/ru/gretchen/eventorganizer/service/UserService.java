@@ -7,7 +7,7 @@ import ru.gretchen.eventorganizer.model.entity.User;
 import java.util.UUID;
 
 public interface UserService {
-    User get(UUID id);
+    User getAndInitialize(UUID id);
 
     Page<User> getAll(Pageable pageable);
 

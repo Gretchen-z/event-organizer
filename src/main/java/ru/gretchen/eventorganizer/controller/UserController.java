@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
-                .map(userService::get)
+                .map(userService::getAndInitialize)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }

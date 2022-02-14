@@ -35,7 +35,7 @@ public class EventController {
     @GetMapping("/{id}")
     public EventDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
-                .map(eventService::get)
+                .map(eventService::getAndInitialize)
                 .map(eventMapper::toDto)
                 .orElseThrow(() -> new EventNotFoundException(id));
     }
@@ -60,7 +60,7 @@ public class EventController {
 
     @Operation(description = "Find all events by dateTime")
     @ApiResponse(responseCode = "200", description = "Events found")
-    @GetMapping("/dateTimeNow")
+    @GetMapping("/date-time-now")
     public Page<EventDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
         Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
         Page<Event> events = eventService.getAllByDateTime(ZonedDateTime.now(), pageable);
