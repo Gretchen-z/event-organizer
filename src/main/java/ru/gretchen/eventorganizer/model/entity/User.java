@@ -6,6 +6,7 @@ import ru.gretchen.eventorganizer.model.enumeration.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -52,8 +53,16 @@ public class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_events",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "event_id") }
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
-    private Set<Event> events;
+    private Set<Event> events = new HashSet<>();
+
+    public void addEvent(Event event) {
+        this.events.add(event);
+    }
+
+    public void removeEvent(Event event) {
+        this.events.remove(event);
+    }
 }

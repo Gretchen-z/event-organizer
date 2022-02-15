@@ -26,7 +26,6 @@ public class Workshop extends BaseEntity{
     @Column(name = "description")
     private String description;
 
-    @Setter(AccessLevel.PRIVATE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
