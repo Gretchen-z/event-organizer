@@ -26,6 +26,9 @@ import java.util.UUID;
 @ApiResponse(responseCode = "400", description = "Validation failed")
 @ApiResponse(responseCode = "404", description = "User not found")
 public class UserController {
+    private static final int DEFAULT_PAGINATION_DATA_LIMIT = 10;
+    private static final int DEFAULT_PAGE_NUM = 1;
+
     private final UserMapper userMapper;
     private final UserService userService;
 
@@ -42,8 +45,11 @@ public class UserController {
     @Operation(description = "Find all users")
     @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping
-    public Page<UserDto> getAll(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<UserDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAll(pageable);
         return users.map(userMapper::toDto);
     }
@@ -51,8 +57,11 @@ public class UserController {
     @Operation(description = "Find all users by eventId")
     @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping("/{eventId}")
-    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAllByEventId(eventId, pageable);
         return users.map(userMapper::toDto);
     }
@@ -60,8 +69,11 @@ public class UserController {
     @Operation(description = "Find all users by surname")
     @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping("/{surname}")
-    public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAllBySurname(surname, pageable);
         return users.map(userMapper::toDto);
     }
@@ -93,24 +105,5 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         userService.delete(id);
-    }
-
-    @GetMapping("/{id}/events/{eventId}")
-    public Page<EventDto> getEvents(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody PaginationDto paginationDto) {
-        return null;
-    }
-
-    @PostMapping("/{id}/events")
-    public EventDto assignEvent(@PathVariable UUID id, @RequestBody EventCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{id}/events/{eventId}")
-    public EventDto updateEvent(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody EventUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{id}/events/{eventId}")
-    public void deleteEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
     }
 }

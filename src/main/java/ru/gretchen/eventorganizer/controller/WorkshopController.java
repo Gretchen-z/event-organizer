@@ -27,6 +27,9 @@ import java.util.UUID;
 @ApiResponse(responseCode = "400", description = "Validation failed")
 @ApiResponse(responseCode = "404", description = "Workshop not found")
 public class WorkshopController {
+    private static final int DEFAULT_PAGINATION_DATA_LIMIT = 10;
+    private static final int DEFAULT_PAGE_NUM = 1;
+
     private final WorkshopMapper workshopMapper;
     private final WorkshopService workshopService;
 
@@ -43,8 +46,11 @@ public class WorkshopController {
     @Operation(description = "Find all workshops")
     @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping
-    public Page<WorkshopDto> getAll(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<WorkshopDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Workshop> workshops = workshopService.getAll(pageable);
         return workshops.map(workshopMapper::toDto);
     }
@@ -52,8 +58,11 @@ public class WorkshopController {
     @Operation(description = "Find all workshops by eventId")
     @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{eventId}")
-    public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<WorkshopDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Workshop> workshops = workshopService.getAllByEvent(eventId, pageable);
         return workshops.map(workshopMapper::toDto);
     }
@@ -61,8 +70,11 @@ public class WorkshopController {
     @Operation(description = "Find all workshops by speakerId")
     @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/{speakerId}")
-    public Page<WorkshopDto> getAllBySpeaker(@PathVariable(name = "speakerId") UUID speakerId, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<WorkshopDto> getAllBySpeaker(@PathVariable(name = "speakerId") UUID speakerId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Workshop> workshops = workshopService.getAllBySpeaker(speakerId, pageable);
         return workshops.map(workshopMapper::toDto);
     }
@@ -70,8 +82,11 @@ public class WorkshopController {
     @Operation(description = "Find all workshops by dateTime")
     @ApiResponse(responseCode = "200", description = "Workshops found")
     @GetMapping("/date-time-now")
-    public Page<WorkshopDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<WorkshopDto> getAllByDateTimeNow(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Workshop> workshops = workshopService.getAllByDateTime(ZonedDateTime.now(), pageable);
         return workshops.map(workshopMapper::toDto);
     }
@@ -103,43 +118,5 @@ public class WorkshopController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         workshopService.delete(id);
-    }
-
-    @GetMapping("/{id}/speakers/{speakerId}")
-    public UserDto getUser(@PathVariable UUID id, @PathVariable UUID speakerId) {
-        return null;
-    }
-
-    @PostMapping("/{id}/speakers")
-    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{id}/speakers/{speakerId}")
-    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID speakerId, @RequestBody EventUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{id}/speakers/{speakerId}")
-    public void deleteUser(@PathVariable UUID id, @PathVariable UUID speakerId) {
-    }
-
-    @GetMapping("/{id}/events/{eventId}")
-    public EventDto getEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
-        return null;
-    }
-
-    @PostMapping("/{id}/events")
-    public EventDto assignEvent(@PathVariable UUID id, @RequestBody EventCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{id}/events/{eventId}")
-    public EventDto updateEvent(@PathVariable UUID id, @PathVariable UUID eventId, @RequestBody EventUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{id}/events/{eventId}")
-    public void deleteEvent(@PathVariable UUID id, @PathVariable UUID eventId) {
     }
 }

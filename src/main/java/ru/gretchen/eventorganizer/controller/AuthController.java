@@ -16,12 +16,12 @@ public class AuthController {
 
     private AuthService authService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest){
         return authService.login(loginRequest);
     };
 
-    @PostMapping("sign-up")
+    @PostMapping("/sign-up")
     public String signUp(@RequestBody SignUpRequest signUpRequest){
         return authService.signUp(signUpRequest);
     }

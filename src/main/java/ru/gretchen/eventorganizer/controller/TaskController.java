@@ -28,6 +28,9 @@ import java.util.UUID;
 @ApiResponse(responseCode = "400", description = "Validation failed")
 @ApiResponse(responseCode = "404", description = "Task not found")
 public class TaskController {
+    private static final int DEFAULT_PAGINATION_DATA_LIMIT = 10;
+    private static final int DEFAULT_PAGE_NUM = 1;
+
     public final TaskMapper taskMapper;
     public final TaskService taskService;
 
@@ -44,8 +47,11 @@ public class TaskController {
     @Operation(description = "Find all tasks")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping
-    public Page<TaskDto> getAll(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<TaskDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAll(pageable);
         return tasks.map(taskMapper::toDto);
     }
@@ -53,8 +59,11 @@ public class TaskController {
     @Operation(description = "Find all tasks by executorId")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{executorId}")
-    public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByExecutor(executorId, pageable);
         return tasks.map(taskMapper::toDto);
     }
@@ -62,8 +71,11 @@ public class TaskController {
     @Operation(description = "Find all tasks by deadline")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{deadline}")
-    public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByDeadline(deadline, pageable);
         return tasks.map(taskMapper::toDto);
     }
@@ -71,8 +83,11 @@ public class TaskController {
     @Operation(description = "Find all tasks by status")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{status}")
-    public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByStatus(status, pageable);
         return tasks.map(taskMapper::toDto);
     }
@@ -80,8 +95,11 @@ public class TaskController {
     @Operation(description = "Find all tasks by description")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping("/{description}")
-    public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByDescription(description, pageable);
         return tasks.map(taskMapper::toDto);
     }
@@ -113,24 +131,5 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(name = "id") UUID id) {
         taskService.delete(id);
-    }
-
-    @GetMapping("/{id}/executors/{executorId}")
-    public UserDto getUser(@PathVariable UUID id, @PathVariable UUID executorId) {
-        return null;
-    }
-
-    @PostMapping("/{id}/executors")
-    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{id}/executors/{executorId}")
-    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID executorId, @RequestBody EventUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{id}/executors/{executorId}")
-    public void deleteUser(@PathVariable UUID id, @PathVariable UUID executorId) {
     }
 }

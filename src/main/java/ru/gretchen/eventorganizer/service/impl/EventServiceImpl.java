@@ -7,9 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.Event;
+import ru.gretchen.eventorganizer.model.entity.User;
+import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.mapper.EventMapper;
 import ru.gretchen.eventorganizer.repository.EventRepository;
 import ru.gretchen.eventorganizer.service.EventService;
+import ru.gretchen.eventorganizer.service.UserService;
+import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -21,6 +25,8 @@ import java.util.UUID;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
+    private final WorkshopService workshopService;
+    private final UserService userService;
 
     @Override
     public Event getAndInitialize(UUID id) {
@@ -37,8 +43,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> getAllByUserId(UUID userID, Pageable pageable) {
-        return eventRepository.findAllByUsersId(userID, pageable);
+    public Page<Event> getAllByUserId(UUID userId, Pageable pageable) {
+        return eventRepository.findAllByUsersId(userId, pageable);
     }
 
     @Override
@@ -67,5 +73,43 @@ public class EventServiceImpl implements EventService {
     public void delete(UUID id) {
         final Event event = eventRepository.findById(id).orElseThrow();
         eventRepository.delete(event);
+    }
+
+    @Override
+    @Transactional
+    public void assignWorkshop(UUID id, UUID workshopId) {
+        Event event = getAndInitialize(id);
+        Workshop workshop = workshopService.getAndInitialize(workshopId);
+        event.addWorkshop(workshop);
+        update(id, event);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWorkshop(UUID id, UUID workshopId) {
+        Event event = getAndInitialize(id);
+        Workshop workshop = workshopService.getAndInitialize(workshopId);
+        event.removeWorkshop(workshop);
+        update(id, event);
+    }
+
+    @Override
+    @Transactional
+    public void assignUser(UUID id, UUID userId) {
+        Event event = getAndInitialize(id);
+        User user = userService.getAndInitialize(userId);
+        event.addUser(user);
+        user.addEvent(event);
+        update(id, event);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(UUID id, UUID userId) {
+        Event event = getAndInitialize(id);
+        User user = userService.getAndInitialize(userId);
+        event.removeUser(user);
+        user.removeEvent(event);
+        update(id, event);
     }
 }

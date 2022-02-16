@@ -27,6 +27,9 @@ import java.util.UUID;
 @ApiResponse(responseCode = "400", description = "Validation failed")
 @ApiResponse(responseCode = "404", description = "Event not found")
 public class EventController {
+    private static final int DEFAULT_PAGINATION_DATA_LIMIT = 10;
+    private static final int DEFAULT_PAGE_NUM = 1;
+
     private final EventMapper eventMapper;
     private final EventService eventService;
 
@@ -43,8 +46,11 @@ public class EventController {
     @Operation(description = "Find all events")
     @ApiResponse(responseCode = "200", description = "Events found")
     @GetMapping
-    public Page<EventDto> getAll(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<EventDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Event> events = eventService.getAll(pageable);
         return events.map(eventMapper::toDto);
     }
@@ -52,8 +58,11 @@ public class EventController {
     @Operation(description = "Find all events by userId")
     @ApiResponse(responseCode = "200", description = "Events found")
     @GetMapping("/{userId}")
-    public Page<EventDto> getAllByUserId(@PathVariable(name = "userId") UUID userId, @RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<EventDto> getAllByUserId(@PathVariable(name = "userId") UUID userId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Event> events = eventService.getAllByUserId(userId, pageable);
         return events.map(eventMapper::toDto);
     }
@@ -61,8 +70,11 @@ public class EventController {
     @Operation(description = "Find all events by dateTime")
     @ApiResponse(responseCode = "200", description = "Events found")
     @GetMapping("/date-time-now")
-    public Page<EventDto> getAllByDateTimeNow(@RequestBody PaginationDto paginationDto) {
-        Pageable pageable = PageRequest.of(paginationDto.getPage(), paginationDto.getLimit());
+    public Page<EventDto> getAllByDateTimeNow(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
+        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+
+        Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Event> events = eventService.getAllByDateTime(ZonedDateTime.now(), pageable);
         return events.map(eventMapper::toDto);
     }
@@ -96,41 +108,31 @@ public class EventController {
         eventService.delete(id);
     }
 
-    @GetMapping("/{id}/workshops/{workshopId}")
-    public Page<WorkshopDto> getWorkshops(@PathVariable UUID id, @PathVariable UUID workshopId, @RequestBody PaginationDto paginationDto) {
-        return null;
-    }
-
-    @PostMapping("/{id}/workshops")
-    public WorkshopDto assignWorkshop(@PathVariable UUID id, @RequestBody WorkshopCreateDto createDto) {
-        return null;
-    }
-
+    @Operation(description = "Add workshop by id")
+    @ApiResponse(responseCode = "200", description = "Workshop added")
     @PatchMapping("/{id}/workshops/{workshopId}")
-    public WorkshopDto updateWorkshop(@PathVariable UUID id, @PathVariable UUID workshopId, @RequestBody WorkshopUpdateDto updateDto) {
-        return null;
+    public void assignWorkshop(@PathVariable UUID id, @PathVariable UUID workshopId) {
+        eventService.assignWorkshop(id, workshopId);
     }
 
+    @Operation(description = "Remove workshop by id")
+    @ApiResponse(responseCode = "204", description = "Workshop removed")
     @DeleteMapping("/{id}/workshops/{workshopId}")
     public void deleteWorkshop(@PathVariable UUID id, @PathVariable UUID workshopId) {
+        eventService.deleteWorkshop(id, workshopId);
     }
 
-    @GetMapping("/{id}/users/{userId}")
-    public Page<UserDto> getUsers(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody PaginationDto paginationDto) {
-        return null;
-    }
-
-    @PostMapping("/{id}/users")
-    public UserDto assignUser(@PathVariable UUID id, @RequestBody UserCreateDto createDto) {
-        return null;
-    }
-
+    @Operation(description = "Add user by id")
+    @ApiResponse(responseCode = "200", description = "User added")
     @PatchMapping("/{id}/users/{userId}")
-    public UserDto updateUser(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody UserUpdateDto updateDto) {
-        return null;
+    public void assignUser(@PathVariable UUID id, @PathVariable UUID userId) {
+        eventService.assignUser(id, userId);
     }
 
+    @Operation(description = "Remove user by id")
+    @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{id}/users/{userId}")
     public void deleteUser(@PathVariable UUID id, @PathVariable UUID userId) {
+        eventService.deleteUser(id, userId);
     }
 }

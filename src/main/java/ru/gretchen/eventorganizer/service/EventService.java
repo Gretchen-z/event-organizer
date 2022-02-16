@@ -12,7 +12,7 @@ public interface EventService {
 
     Page<Event> getAll(Pageable pageable);
 
-    Page<Event> getAllByUserId(UUID userID, Pageable pageable);
+    Page<Event> getAllByUserId(UUID userId, Pageable pageable);
 
     Page<Event> getAllByDateTime(ZonedDateTime dateTime, Pageable pageable);
 
@@ -21,4 +21,12 @@ public interface EventService {
     Event update(UUID id, Event eventJson);
 
     void delete(UUID id);
+
+    void assignWorkshop(UUID id, UUID workshopId);
+
+    void deleteWorkshop(UUID id, UUID workshopId);
+
+    void assignUser(UUID id, UUID userId);
+
+    void deleteUser(UUID id, UUID userId);
 }
