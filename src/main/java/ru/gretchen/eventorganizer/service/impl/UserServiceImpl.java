@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gretchen.eventorganizer.model.entity.User;
+import ru.gretchen.eventorganizer.model.exception.EmailNotExistsException;
 import ru.gretchen.eventorganizer.model.mapper.UserMapper;
 import ru.gretchen.eventorganizer.repository.UserRepository;
 import ru.gretchen.eventorganizer.service.UserService;
@@ -29,6 +30,11 @@ public class UserServiceImpl implements UserService {
         Hibernate.initialize(result);
         Hibernate.initialize(result.getEvents());
         return result;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistsException(email));
     }
 
     @Override

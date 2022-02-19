@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface UserService {
     User getAndInitialize(UUID id);
 
+    User getByEmail(String email);
+
     Page<User> getAll(Pageable pageable);
 
     Page<User> getAllByEventId(UUID eventId, Pageable pageable);

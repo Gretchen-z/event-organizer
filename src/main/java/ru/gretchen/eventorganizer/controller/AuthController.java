@@ -14,7 +14,7 @@ import ru.gretchen.eventorganizer.service.AuthService;
 @RequestMapping(path = "/auth")
 public class AuthController {
 
-    private AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest){

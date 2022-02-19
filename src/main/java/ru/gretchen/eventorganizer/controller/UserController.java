@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.User;
@@ -35,6 +36,7 @@ public class UserController {
     @Operation(description = "Find user by id")
     @ApiResponse(responseCode = "200", description = "User found")
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') || hasAuthority('ROLE_ADMIN') || hasPermission(#id, 'READ' || userRepository.findById(#id) != null)")
     public UserDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(userService::getAndInitialize)

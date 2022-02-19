@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.gretchen.eventorganizer.model.dto.security.LoginRequest;
 import ru.gretchen.eventorganizer.model.dto.security.SignUpRequest;
 import ru.gretchen.eventorganizer.model.entity.User;
+import ru.gretchen.eventorganizer.model.exception.EmailNotExistsException;
 import ru.gretchen.eventorganizer.service.AuthService;
 import ru.gretchen.eventorganizer.service.TokenService;
 import ru.gretchen.eventorganizer.service.UserService;
@@ -13,20 +14,25 @@ import ru.gretchen.eventorganizer.service.UserService;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private PasswordEncoder passwordEncoder;
-    private UserService userService;
-    private TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     @Override
     public String login(LoginRequest loginRequest) {
-        return null;
+        User user = userService.getByEmail(loginRequest.getUsername());
+        if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            return tokenService.generateToken(user);
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     @Override
     public String signUp(SignUpRequest signUpRequest) {
         User user = new User();
         user.setEmail(signUpRequest.getUsername());
-        user.setPassword(signUpRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userService.create(user);
         return tokenService.generateToken(user);
     }
