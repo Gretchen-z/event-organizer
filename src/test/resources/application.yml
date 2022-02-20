@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: TEST
+  datasource:
+    url: jdbc:postgresql://localhost:5432/EventOrganizer
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db-changelog-master.yaml
+server:
+  error:
+    include-message: always
+    include-exception: true
+    include-binding-errors: always
+
+
