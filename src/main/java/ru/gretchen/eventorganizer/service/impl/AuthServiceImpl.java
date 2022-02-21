@@ -32,6 +32,12 @@ public class AuthServiceImpl implements AuthService {
         User user = new User();
         user.setEmail(signUpRequest.getUsername());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setSurname(signUpRequest.getSurname());
+        user.setDateOfBirth(signUpRequest.getDateOfBirth());
+        user.setGender(signUpRequest.getGender());
+        user.setLocality(signUpRequest.getLocality());
+        user.setPhoneNumber(signUpRequest.getPhoneNumber());
         userService.create(user);
         return tokenService.generateToken(user);
     }

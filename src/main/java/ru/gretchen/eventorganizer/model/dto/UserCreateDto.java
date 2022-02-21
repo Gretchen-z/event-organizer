@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Value
 @Builder
@@ -65,6 +66,8 @@ public class UserCreateDto {
     @Schema(description = "User email",
             required = true)
     String email;
+
+    LocalDate registrationDate = LocalDate.now();
 
     Role role = Role.PARTICIPANT;
 }

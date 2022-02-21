@@ -65,7 +65,4 @@ public class UserUpdateDto {
     @Schema(description = "User email",
             required = true)
     String email;
-
-    @Schema(description = "User role")
-    Role role;
 }

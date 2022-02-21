@@ -106,6 +106,18 @@ public class UserController {
                 .orElseThrow();
     }
 
+    @Operation(description = "Update users role by id")
+    @ApiResponse(responseCode = "200", description = "Users role updated")
+    @PatchMapping("/role/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserDto updateRole(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserRoleUpdateDto updateDto) {
+        return Optional.ofNullable(updateDto)
+                .map(userMapper::fromUpdateDto)
+                .map(toUpdate -> userService.update(id, toUpdate))
+                .map(userMapper::toDto)
+                .orElseThrow();
+    }
+
     @Operation(description = "Remove user by id")
     @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{id}")
