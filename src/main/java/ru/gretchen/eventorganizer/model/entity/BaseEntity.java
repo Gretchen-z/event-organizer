@@ -18,9 +18,6 @@ public abstract class BaseEntity {
     @GeneratedValue
     private UUID id;
 
-    @Version
-    private Integer version;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

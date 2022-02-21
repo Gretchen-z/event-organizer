@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.gretchen.eventorganizer.model.dto.UserDto;
 import ru.gretchen.eventorganizer.model.entity.User;
-import ru.gretchen.eventorganizer.model.exception.EmailNotExistsException;
-import ru.gretchen.eventorganizer.model.exception.UserNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.UserMapper;
 import ru.gretchen.eventorganizer.service.TokenService;
 import ru.gretchen.eventorganizer.service.UserService;
@@ -43,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(
                             userDto,
                             null,
-                            List.of(new SimpleGrantedAuthority("ROLE_" + userDto.getRole().name())));
+                            List.of(new SimpleGrantedAuthority(userDto.getRole().name())));
             securityContext.setAuthentication(usernamePasswordAuthenticationToken);
         }
         filterChain.doFilter(request, response);

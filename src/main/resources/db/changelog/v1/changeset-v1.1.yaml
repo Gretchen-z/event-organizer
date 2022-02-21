@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.1"
+      author: gretchen
+      changes:
+        - modifyDataType:
+            columnName: password
+            newDataType: varchar (100)
+            schemaName: public
+            tableName: users

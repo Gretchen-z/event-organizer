@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.gretchen.eventorganizer.model.dto.security.LoginRequest;
 import ru.gretchen.eventorganizer.model.dto.security.SignUpRequest;
 import ru.gretchen.eventorganizer.model.entity.User;
-import ru.gretchen.eventorganizer.model.exception.EmailNotExistsException;
 import ru.gretchen.eventorganizer.service.AuthService;
 import ru.gretchen.eventorganizer.service.TokenService;
 import ru.gretchen.eventorganizer.service.UserService;

@@ -16,7 +16,6 @@ import ru.gretchen.eventorganizer.security.JwtRequestFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter filter;
 

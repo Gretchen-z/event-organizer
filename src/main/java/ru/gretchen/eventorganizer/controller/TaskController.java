@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Task;
@@ -37,6 +38,7 @@ public class TaskController {
     @Operation(description = "Find task by id")
     @ApiResponse(responseCode = "200", description = "Task found")
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public TaskDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(taskService::getAndInitialize)
@@ -47,9 +49,10 @@ public class TaskController {
     @Operation(description = "Find all tasks")
     @ApiResponse(responseCode = "200", description = "Tasks found")
     @GetMapping
-    public Page<TaskDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<TaskDto> getAll(@RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAll(pageable);
@@ -58,10 +61,11 @@ public class TaskController {
 
     @Operation(description = "Find all tasks by executorId")
     @ApiResponse(responseCode = "200", description = "Tasks found")
-    @GetMapping("/{executorId}")
-    public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/executor/{executorId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<TaskDto> getAllByExecutor(@PathVariable(name = "executorId") UUID executorId, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByExecutor(executorId, pageable);
@@ -70,10 +74,11 @@ public class TaskController {
 
     @Operation(description = "Find all tasks by deadline")
     @ApiResponse(responseCode = "200", description = "Tasks found")
-    @GetMapping("/{deadline}")
-    public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/deadline/{deadline}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<TaskDto> getAllByDeadline(@PathVariable(name = "deadline") LocalDateTime deadline, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByDeadline(deadline, pageable);
@@ -82,10 +87,11 @@ public class TaskController {
 
     @Operation(description = "Find all tasks by status")
     @ApiResponse(responseCode = "200", description = "Tasks found")
-    @GetMapping("/{status}")
-    public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/status/{status}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<TaskDto> getAllByStatus(@PathVariable(name = "status") TaskStatus status, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByStatus(status, pageable);
@@ -94,10 +100,11 @@ public class TaskController {
 
     @Operation(description = "Find all tasks by description")
     @ApiResponse(responseCode = "200", description = "Tasks found")
-    @GetMapping("/{description}")
-    public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/description/{description}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<TaskDto> getAllByDescription(@PathVariable(name = "description") String description, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<Task> tasks = taskService.getAllByDescription(description, pageable);
@@ -107,6 +114,7 @@ public class TaskController {
     @Operation(description = "Create task")
     @ApiResponse(responseCode = "200", description = "Task created")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public TaskDto create(@RequestBody @Valid TaskCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(taskMapper::fromCreateDto)
@@ -118,6 +126,7 @@ public class TaskController {
     @Operation(description = "Update task by id")
     @ApiResponse(responseCode = "200", description = "Task updated")
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public TaskDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid TaskUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(taskMapper::fromUpdateDto)
@@ -129,6 +138,7 @@ public class TaskController {
     @Operation(description = "Remove task by id")
     @ApiResponse(responseCode = "204", description = "Task removed")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public void delete(@PathVariable(name = "id") UUID id) {
         taskService.delete(id);
     }

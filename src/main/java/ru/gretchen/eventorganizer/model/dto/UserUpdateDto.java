@@ -34,6 +34,12 @@ public class UserUpdateDto {
             required = true)
     String surname;
 
+    @NotBlank(message = "Поле \"Пароль\" не может быть пустым")
+    @Size(min = 3, max = 100, message = "Пароль должен содержать не менее 3 и не более 50 символов")
+    @Schema(description = "User password",
+            required = true)
+    String password;
+
     @Past(message = "Введите корректную дату рождения")
     @Schema(description = "User date of birth")
     LocalDate dateOfBirth;

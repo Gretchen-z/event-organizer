@@ -36,7 +36,7 @@ public class UserController {
     @Operation(description = "Find user by id")
     @ApiResponse(responseCode = "200", description = "User found")
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasAuthority('ROLE_ADMIN') || hasPermission(#id, 'READ' || userRepository.findById(#id) != null)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER') || hasPermission(#id, 'USER', 'READ')")
     public UserDto get(@PathVariable(name = "id") UUID id) {
         return Optional.of(id)
                 .map(userService::getAndInitialize)
@@ -47,9 +47,10 @@ public class UserController {
     @Operation(description = "Find all users")
     @ApiResponse(responseCode = "200", description = "Users found")
     @GetMapping
-    public Page<UserDto> getAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<UserDto> getAll(@RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAll(pageable);
@@ -58,10 +59,11 @@ public class UserController {
 
     @Operation(description = "Find all users by eventId")
     @ApiResponse(responseCode = "200", description = "Users found")
-    @GetMapping("/{eventId}")
-    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/event/{eventId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<UserDto> getAllByEvent(@PathVariable(name = "eventId") UUID eventId, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAllByEventId(eventId, pageable);
@@ -70,10 +72,11 @@ public class UserController {
 
     @Operation(description = "Find all users by surname")
     @ApiResponse(responseCode = "200", description = "Users found")
-    @GetMapping("/{surname}")
-    public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestParam(required = false) int limit, @RequestParam(required = false) int page) {
-        int datLimit = (limit == 0) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
-        int pageNum = (page == 0) ? DEFAULT_PAGE_NUM : page;
+    @GetMapping("/surname{surname}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
+        int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
+        int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
 
         Pageable pageable = PageRequest.of(pageNum, datLimit);
         Page<User> users = userService.getAllBySurname(surname, pageable);
@@ -94,6 +97,7 @@ public class UserController {
     @Operation(description = "Update user by id")
     @ApiResponse(responseCode = "200", description = "User updated")
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'UPDATE')")
     public UserDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
@@ -105,6 +109,7 @@ public class UserController {
     @Operation(description = "Remove user by id")
     @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'DELETE')")
     public void delete(@PathVariable(name = "id") UUID id) {
         userService.delete(id);
     }

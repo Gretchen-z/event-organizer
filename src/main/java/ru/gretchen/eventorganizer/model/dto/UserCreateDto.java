@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 import ru.gretchen.eventorganizer.model.enumeration.Gender;
+import ru.gretchen.eventorganizer.model.enumeration.Role;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +35,7 @@ public class UserCreateDto {
     String surname;
 
     @NotBlank(message = "Поле \"Пароль\" не может быть пустым")
-    @Size(min = 3, max = 50, message = "Пароль должен содержать не менее 3 и не более 50 символов")
+    @Size(min = 3, max = 100, message = "Пароль должен содержать не менее 3 и не более 50 символов")
     @Schema(description = "User password",
             required = true)
     String password;
@@ -64,4 +65,6 @@ public class UserCreateDto {
     @Schema(description = "User email",
             required = true)
     String email;
+
+    Role role = Role.PARTICIPANT;
 }
