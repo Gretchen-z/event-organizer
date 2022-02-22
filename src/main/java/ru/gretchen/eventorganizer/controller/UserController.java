@@ -98,7 +98,7 @@ public class UserController {
     @Operation(description = "Update user by id")
     @ApiResponse(responseCode = "200", description = "User updated")
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN') || hasPermission(#id, 'USER', 'UPDATE')")
+    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'UPDATE')")
     public UserDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
@@ -110,7 +110,7 @@ public class UserController {
     @Operation(description = "Update users role by id")
     @ApiResponse(responseCode = "200", description = "Users role updated")
     @PatchMapping("/role/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserDto updateRole(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserRoleUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
@@ -122,7 +122,7 @@ public class UserController {
     @Operation(description = "Remove user by id")
     @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN') || hasPermission(#id, 'USER', 'DELETE')")
+    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'DELETE')")
     public void delete(@PathVariable(name = "id") UUID id) {
         userService.delete(id);
     }
