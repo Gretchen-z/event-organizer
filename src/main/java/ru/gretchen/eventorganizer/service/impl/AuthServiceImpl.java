@@ -10,6 +10,8 @@ import ru.gretchen.eventorganizer.service.AuthService;
 import ru.gretchen.eventorganizer.service.TokenService;
 import ru.gretchen.eventorganizer.service.UserService;
 
+import javax.validation.Valid;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -28,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String signUp(SignUpRequest signUpRequest) {
+    public String signUp(@Valid SignUpRequest signUpRequest) {
         User user = new User();
         user.setEmail(signUpRequest.getUsername());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
@@ -38,6 +40,8 @@ public class AuthServiceImpl implements AuthService {
         user.setGender(signUpRequest.getGender());
         user.setLocality(signUpRequest.getLocality());
         user.setPhoneNumber(signUpRequest.getPhoneNumber());
+        user.setRegistrationDate(signUpRequest.getRegistrationDate());
+        user.setRole(signUpRequest.getRole());
         userService.create(user);
         return tokenService.generateToken(user);
     }

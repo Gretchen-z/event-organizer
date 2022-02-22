@@ -72,7 +72,7 @@ public class UserController {
 
     @Operation(description = "Find all users by surname")
     @ApiResponse(responseCode = "200", description = "Users found")
-    @GetMapping("/surname{surname}")
+    @GetMapping("/surname/{surname}")
     @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public Page<UserDto> getAllBySurname(@PathVariable(name = "surname")String surname, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
         int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
@@ -86,6 +86,7 @@ public class UserController {
     @Operation(description = "Create user")
     @ApiResponse(responseCode = "200", description = "User created")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public UserDto create(@RequestBody @Valid UserCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(userMapper::fromCreateDto)
@@ -97,7 +98,7 @@ public class UserController {
     @Operation(description = "Update user by id")
     @ApiResponse(responseCode = "200", description = "User updated")
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'UPDATE')")
+    @PreAuthorize("hasAnyRole('ADMIN') || hasPermission(#id, 'USER', 'UPDATE')")
     public UserDto update(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
@@ -109,7 +110,7 @@ public class UserController {
     @Operation(description = "Update users role by id")
     @ApiResponse(responseCode = "200", description = "Users role updated")
     @PatchMapping("/role/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public UserDto updateRole(@PathVariable(name = "id") UUID id, @RequestBody @Valid UserRoleUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(userMapper::fromUpdateDto)
@@ -121,7 +122,7 @@ public class UserController {
     @Operation(description = "Remove user by id")
     @ApiResponse(responseCode = "204", description = "User removed")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') || hasPermission(#id, 'USER', 'DELETE')")
+    @PreAuthorize("hasAnyRole('ADMIN') || hasPermission(#id, 'USER', 'DELETE')")
     public void delete(@PathVariable(name = "id") UUID id) {
         userService.delete(id);
     }
