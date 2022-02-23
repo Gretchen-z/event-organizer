@@ -13,7 +13,6 @@ import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.exception.WorkshopNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
-import ru.gretchen.eventorganizer.service.UserService;
 import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import javax.validation.Valid;

@@ -61,7 +61,7 @@ public class EventController {
     @Operation(description = "Find all events by userId")
     @ApiResponse(responseCode = "200", description = "Events found")
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER') || hasPermission(#id, 'EVENT', 'READ')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER') || hasPermission(#userId, 'EVENT', 'READ')")
     public Page<EventDto> getAllByUserId(@PathVariable(name = "userId") UUID userId, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer page) {
         int datLimit = (limit == null) ? DEFAULT_PAGINATION_DATA_LIMIT : limit;
         int pageNum = (page == null) ? DEFAULT_PAGE_NUM : page;
