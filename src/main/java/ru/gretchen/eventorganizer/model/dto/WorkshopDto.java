@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
@@ -25,7 +25,7 @@ public class WorkshopDto {
     UUID id;
 
     @Schema(description = "Workshop date time")
-    ZonedDateTime dateTime;
+    LocalDate dateTime;
 
     @Schema(description = "Workshop topic",
             required = true)

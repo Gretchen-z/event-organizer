@@ -3,7 +3,7 @@ package ru.gretchen.eventorganizer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Event extends BaseEntity {
     private String locality;
 
     @Column(name = "date")
-    private ZonedDateTime dateTime;
+    private LocalDate dateTime;
 
     @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY,

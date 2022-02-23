@@ -13,6 +13,7 @@ import ru.gretchen.eventorganizer.model.dto.*;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.exception.WorkshopNotFoundException;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
+import ru.gretchen.eventorganizer.service.UserService;
 import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import javax.validation.Valid;
@@ -127,5 +128,21 @@ public class WorkshopController {
     @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public void delete(@PathVariable(name = "id") UUID id) {
         workshopService.delete(id);
+    }
+
+    @Operation(description = "Add speaker by id")
+    @ApiResponse(responseCode = "200", description = "Speaker added")
+    @PatchMapping("/{id}/users/{speakerId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public void assignSpeaker(@PathVariable UUID id, @PathVariable UUID speakerId) {
+        workshopService.assignSpeaker(id, speakerId);
+    }
+
+    @Operation(description = "Remove speaker by id")
+    @ApiResponse(responseCode = "204", description = "Speaker removed")
+    @DeleteMapping("/{id}/users")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public void deleteSpeaker(@PathVariable UUID id) {
+        workshopService.deleteSpeaker(id);
     }
 }

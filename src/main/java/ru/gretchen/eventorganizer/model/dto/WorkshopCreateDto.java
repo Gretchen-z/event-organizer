@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
@@ -22,7 +22,7 @@ public class WorkshopCreateDto {
 
     @FutureOrPresent
     @Schema(description = "Workshop date time")
-    ZonedDateTime dateTime;
+    LocalDate dateTime;
 
     @NotBlank(message = "Поле \"Тема мастеркласса\" не может быть пустым")
     @Size(max = 50, message = "Поле \"Тема мастеркласса\" не может содержать более 50 символов")

@@ -3,7 +3,7 @@ package ru.gretchen.eventorganizer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class Workshop extends BaseEntity{
     private User speaker;
 
     @Column(name = "date_time")
-    private ZonedDateTime dateTime;
+    private LocalDate dateTime;
 
     @Column(name = "topic")
     private String topic;

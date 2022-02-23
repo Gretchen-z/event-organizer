@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Value
 @Builder
@@ -39,5 +39,5 @@ public class EventCreateDto {
 
     @FutureOrPresent
     @Schema(description = "Event date time")
-    ZonedDateTime dateTime;
+    LocalDate dateTime;
 }

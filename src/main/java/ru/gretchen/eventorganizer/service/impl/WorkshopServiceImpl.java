@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gretchen.eventorganizer.model.entity.User;
 import ru.gretchen.eventorganizer.model.entity.Workshop;
 import ru.gretchen.eventorganizer.model.mapper.WorkshopMapper;
 import ru.gretchen.eventorganizer.repository.WorkshopRepository;
+import ru.gretchen.eventorganizer.service.UserService;
 import ru.gretchen.eventorganizer.service.WorkshopService;
 
 import java.time.ZonedDateTime;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class WorkshopServiceImpl implements WorkshopService {
     private final WorkshopRepository workshopRepository;
     private final WorkshopMapper workshopMapper;
+    private final UserService userService;
 
     @Override
     public Workshop getAndInitialize(UUID id) {
@@ -72,5 +75,20 @@ public class WorkshopServiceImpl implements WorkshopService {
     public void delete(UUID id) {
         final Workshop workshop = workshopRepository.findById(id).orElseThrow();
         workshopRepository.delete(workshop);
+    }
+
+    @Override
+    public void assignSpeaker(UUID id, UUID speakerId) {
+        Workshop workshop = getAndInitialize(id);
+        User speaker = userService.getAndInitialize(speakerId);
+        workshop.setSpeaker(speaker);
+        update(id, workshop);
+    }
+
+    @Override
+    public void deleteSpeaker(UUID id) {
+        Workshop workshop = getAndInitialize(id);
+        workshop.setSpeaker(null);
+        update(id, workshop);
     }
 }

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.2"
+      author: gretchen
+      changes:
+        - modifyDataType:
+            columnName: date
+            newDataType: date
+            schemaName: public
+            tableName: events
+        - modifyDataType:
+            columnName: date_time
+            newDataType: date
+            schemaName: public
+            tableName: workshops

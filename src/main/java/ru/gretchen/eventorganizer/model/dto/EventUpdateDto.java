@@ -8,9 +8,8 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Value
 @Builder
@@ -19,7 +18,6 @@ import java.time.ZonedDateTime;
 @Schema(name = "EventUpdate", description = "Update event")
 public class EventUpdateDto {
 
-    @NotBlank(message = "Поле \"Название мероприятия\" не может быть пустым")
     @Size(max = 50, message = "Поле \"Название мероприятия\" не может содержать более 50 символов")
     @Schema(description = "Event name",
             required = true)
@@ -39,5 +37,5 @@ public class EventUpdateDto {
 
     @FutureOrPresent
     @Schema(description = "Event date time")
-    ZonedDateTime dateTime;
+    LocalDate dateTime;
 }

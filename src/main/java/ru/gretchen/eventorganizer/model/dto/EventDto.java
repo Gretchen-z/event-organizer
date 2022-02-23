@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
@@ -38,5 +38,5 @@ public class EventDto {
     String locality;
 
     @Schema(description = "Event date time")
-    ZonedDateTime dateTime;
+    LocalDate dateTime;
 }
