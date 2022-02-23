@@ -8,19 +8,15 @@ import ru.gretchen.eventorganizer.model.entity.Task;
 
 @Mapper
 public interface TaskMapper {
-    @Mapping(target = "executor", ignore = true)
     Task fromDto(TaskDto source);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "executor", ignore = true)
     Task fromCreateDto(TaskCreateDto source);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dateCreating", ignore = true)
-    @Mapping(target = "executor", ignore = true)
     Task fromUpdateDto(TaskUpdateDto source);
 
-    @Mapping(target = "executorId", source = "executor.id")
     TaskDto toDto(Task source);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

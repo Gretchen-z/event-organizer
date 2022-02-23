@@ -27,7 +27,6 @@ public class TaskServiceImpl implements TaskService {
     public Task getAndInitialize(UUID id) {
         Task result = taskRepository.findById(id).orElseThrow();
         Hibernate.initialize(result);
-        Hibernate.initialize(result.getExecutor());
         return result;
     }
 

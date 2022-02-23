@@ -23,8 +23,4 @@ public interface WorkshopService {
     Workshop update(UUID id, Workshop workshopJson);
 
     void delete(UUID id);
-
-    void assignSpeaker(UUID id, UUID speakerId);
-
-    void deleteSpeaker(UUID id);
 }

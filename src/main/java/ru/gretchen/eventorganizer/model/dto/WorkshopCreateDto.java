@@ -38,7 +38,4 @@ public class WorkshopCreateDto {
 
     @Schema(description = "Speaker user id")
     UUID speakerId;
-
-    @Schema(description = "EventId")
-    UUID eventId;
 }

@@ -5,6 +5,7 @@ import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,9 +21,8 @@ public class Task extends BaseEntity {
     @Column(name = "deadline")
     private LocalDateTime deadline;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "executor_id")
-    private User executor;
+    private UUID executorId;
 
     @Column(name = "description")
     private String description;

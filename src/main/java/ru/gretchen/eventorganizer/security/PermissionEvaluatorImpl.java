@@ -56,8 +56,7 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     private boolean checkGetWorkshopPermission(UserDto principal, UUID targetId){
         Workshop workshop = workshopService.getAndInitialize(targetId);
-        User speaker = workshop.getSpeaker();
-        return principal.getId().equals(speaker.getId());
+        return principal.getId().equals(workshop.getSpeakerId());
     }
 
     private boolean checkGetAllByEventWorkshopPermission(UserDto principal, UUID targetId){

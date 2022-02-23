@@ -129,20 +129,4 @@ public class WorkshopController {
     public void delete(@PathVariable(name = "id") UUID id) {
         workshopService.delete(id);
     }
-
-    @Operation(description = "Add speaker by id")
-    @ApiResponse(responseCode = "200", description = "Speaker added")
-    @PatchMapping("/{id}/users/{speakerId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
-    public void assignSpeaker(@PathVariable UUID id, @PathVariable UUID speakerId) {
-        workshopService.assignSpeaker(id, speakerId);
-    }
-
-    @Operation(description = "Remove speaker by id")
-    @ApiResponse(responseCode = "204", description = "Speaker removed")
-    @DeleteMapping("/{id}/users")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
-    public void deleteSpeaker(@PathVariable UUID id) {
-        workshopService.deleteSpeaker(id);
-    }
 }

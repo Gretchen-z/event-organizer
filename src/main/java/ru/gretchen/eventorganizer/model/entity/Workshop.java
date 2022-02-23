@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,9 +14,8 @@ import java.time.LocalDate;
 @Table(name = "workshops")
 public class Workshop extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "speaker_id")
-    private User speaker;
+    private UUID speakerId;
 
     @Column(name = "date_time")
     private LocalDate dateTime;

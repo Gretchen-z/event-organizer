@@ -8,21 +8,17 @@ import ru.gretchen.eventorganizer.model.entity.Workshop;
 
 @Mapper
 public interface WorkshopMapper {
-    @Mapping(target = "speaker", ignore = true)
     @Mapping(target = "event", ignore = true)
     Workshop fromDto(WorkshopDto source);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "speaker", ignore = true)
     @Mapping(target = "event", ignore = true)
     Workshop fromCreateDto(WorkshopCreateDto source);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "speaker", ignore = true)
     @Mapping(target = "event", ignore = true)
     Workshop fromUpdateDto(WorkshopUpdateDto source);
 
-    @Mapping(target = "speakerId", source = "speaker.id")
     @Mapping(target = "eventId", source = "event.id")
     WorkshopDto toDto(Workshop source);
 
