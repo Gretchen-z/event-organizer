@@ -8,7 +8,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
@@ -26,10 +26,10 @@ public class TaskDto {
     UUID id;
 
     @Schema(description = "Task date creating")
-    LocalDateTime dateCreating;
+    LocalDate dateCreating;
 
     @Schema(description = "Task deadline")
-    LocalDateTime deadline;
+    LocalDate deadline;
 
     @Schema(description = "Executor user id")
     UUID executorId;

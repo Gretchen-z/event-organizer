@@ -4,7 +4,7 @@ import lombok.*;
 import ru.gretchen.eventorganizer.model.enumeration.TaskStatus;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -16,10 +16,10 @@ import java.util.UUID;
 public class Task extends BaseEntity {
 
     @Column(name = "date_creating")
-    private LocalDateTime dateCreating;
+    private LocalDate dateCreating;
 
     @Column(name = "deadline")
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     @JoinColumn(name = "executor_id")
     private UUID executorId;

@@ -12,7 +12,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
@@ -24,11 +24,11 @@ public class TaskCreateDto {
 
     @PastOrPresent
     @Schema(description = "Task date creating")
-    LocalDateTime dateCreating;
+    LocalDate dateCreating;
 
     @FutureOrPresent
     @Schema(description = "Task deadline")
-    LocalDateTime deadline;
+    LocalDate deadline;
 
     @Schema(description = "Executor user id")
     UUID executorId;
@@ -39,7 +39,6 @@ public class TaskCreateDto {
             required = true)
     String description;
 
-    @Size(max = 30)
     @Schema(description = "Task status")
     TaskStatus status;
 }
